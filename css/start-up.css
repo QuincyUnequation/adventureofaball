@@ -29,7 +29,8 @@
     -o-transition : padding 0.8s;
     -moz-transition : padding 0.8s;
 }
-#start-up .button:hover {
+#start-up .button:hover,
+#start-up .button:focus {
     font-size : 1.8em;
     padding : 0.1em;
     background-color : rgba(189, 192, 186, 0.1);
