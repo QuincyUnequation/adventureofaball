@@ -5,6 +5,10 @@
     display : block;
     margin-left : 20px;
     margin-top : 20px;
+    animation : show 1s;
+    -webkit-animation : show 1s;
+    -moz-animation : show 1s;
+    -o-animation : show 1s;
 }
 
 #start-up .button {
@@ -34,4 +38,49 @@
     font-size : 1.8em;
     padding : 0.1em;
     background-color : rgba(189, 192, 186, 0.1);
+}
+
+#start-up #startgame {
+    animation : show 1.5s;
+    -webkit-animation : show 1.5s;
+    -moz-animation : show 1.5s;
+    -o-animation : show 1.5s;
+}
+
+#start-up #preference {
+    animation : show 2.5s;
+    -webkit-animation : show 2.5s;
+    -moz-animation : show 2.5s;
+    -o-animation : show 2.5s;
+}
+
+#start-up #career {
+    animation : show 3.5s;
+    -webkit-animation : show 3.5s;
+    -moz-animation : show 3.5s;
+    -o-animation : show 3.5s;
+}
+
+#start-up #help {
+    animation : show 4.5s;
+    -webkit-animation : show 4.5s;
+    -moz-animation : show 4.5s;
+    -o-animation : show 4.5s;
+}
+
+@keyframes show {
+    0% { transform : translateX(-100%); }
+    100% { transform : translateX(0); }
+}
+@-webkit-keyframes show {
+    0% { -webkit-transform : translateX(-100%); }
+    100% { -webkit-transform : translateX(0); }
+}
+@-moz-keyframes show {
+    0% { -moz-transform : translateX(-100%); }
+    100% { -moz-transform : translateX(0); }
+}
+@-o-keyframes show {
+    0% { -o-transform : translateX(-100%); }
+    100% { -o-transform : translateX(0); }
 }
