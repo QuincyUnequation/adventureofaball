@@ -6,11 +6,9 @@ function showpreference() {
     $('#preferencewindow').rmClass('off');
 }
 function showcareer() {
-    $('#start-up h1').addClass('off');
-    $('#start-up button').addClass('off');
+    $('#careerwindow').rmClass('off');
 }
 function showhelp() {
-    $('#start-up h1').addClass('off');
-    $('#start-up button').addClass('off');
+    $('#helpwindow').rmClass('off');
 
 }
