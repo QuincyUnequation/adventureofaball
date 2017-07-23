@@ -18,6 +18,5 @@ div.ui {
     right : 0px;
 }
 
-.off {display : none;}
 
-div.ui .on {display : block;}
+div.ui .on { display : block; }

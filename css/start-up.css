@@ -18,7 +18,7 @@
     margin-left : 20px;
     margin-top : 15px;
     padding : 0.4em;
-    font-size : 1.5em;
+    font-size : 1.2em;
     font-weight : 400;
     transition : background-color 0.8s;
     -webkit-transition : background-color 0.8s;
@@ -41,46 +41,105 @@
 }
 
 #start-up #startgame {
-    animation : show 1.5s;
-    -webkit-animation : show 1.5s;
-    -moz-animation : show 1.5s;
-    -o-animation : show 1.5s;
+    animation : show 1.2s;
+    -webkit-animation : show 1.2s;
+    -moz-animation : show 1.2s;
+    -o-animation : show 1.2s;
 }
 
 #start-up #preference {
-    animation : show 2.5s;
-    -webkit-animation : show 2.5s;
-    -moz-animation : show 2.5s;
-    -o-animation : show 2.5s;
+    animation : show 1.4s;
+    -webkit-animation : show 1.4s;
+    -moz-animation : show 1.4s;
+    -o-animation : show 1.4s;
 }
 
 #start-up #career {
-    animation : show 3.5s;
-    -webkit-animation : show 3.5s;
-    -moz-animation : show 3.5s;
-    -o-animation : show 3.5s;
+    animation : show 1.6s;
+    -webkit-animation : show 1.6s;
+    -moz-animation : show 1.6s;
+    -o-animation : show 1.6s;
 }
 
 #start-up #help {
-    animation : show 4.5s;
-    -webkit-animation : show 4.5s;
-    -moz-animation : show 4.5s;
-    -o-animation : show 4.5s;
+    animation : show 1.8s;
+    -webkit-animation : show 1.8s;
+    -moz-animation : show 1.8s;
+    -o-animation : show 1.8s;
 }
 
 @keyframes show {
-    0% { transform : translateX(-100%); }
+    0% { transform : translateX(-150%); }
     100% { transform : translateX(0); }
 }
 @-webkit-keyframes show {
-    0% { -webkit-transform : translateX(-100%); }
+    0% { -webkit-transform : translateX(-150%); }
     100% { -webkit-transform : translateX(0); }
 }
 @-moz-keyframes show {
-    0% { -moz-transform : translateX(-100%); }
+    0% { -moz-transform : translateX(-150%); }
     100% { -moz-transform : translateX(0); }
 }
 @-o-keyframes show {
-    0% { -o-transform : translateX(-100%); }
+    0% { -o-transform : translateX(-150%); }
     100% { -o-transform : translateX(0); }
+}
+
+#start-up .off {
+    transform : translateX(-150%);
+    -webkit-transform : translateX(-150%);
+    -moz-transform : translateX(-150%);
+    -o-transform : translateX(-150%);
+}
+
+#start-up #help.off {
+    animation : hide 1s;
+    -webkit-animation : hide 1s;
+    -moz-animation : hide 1s;
+    -o-animation : hide 1s;
+}
+
+#start-up #career.off {
+    animation : hide 1.2s;
+    -webkit-animation : hide 1.2s;
+    -moz-animation : hide 1.2s;
+    -o-animation : hide 1.2s;
+}
+
+#start-up #preference.off {
+    animation : hide 1.4s;
+    -webkit-animation : hide 1.4s;
+    -moz-animation : hide 1.4s;
+    -o-animation : hide 1.4s;
+}
+
+#start-up #startgame.off {
+    animation : hide 1.6s;
+    -webkit-animation : hide 1.6s;
+    -moz-animation : hide 1.6s;
+    -o-animation : hide 1.6s;
+}
+
+#start-up h1.off {
+    animation : hide 1.8s;
+    -webkit-animation : hide 1.8s;
+    -moz-animation : hide 1.8s;
+    -o-animation : hide 1.8s;
+}
+
+@keyframes hide {
+    0% { transform : translateX(0); }
+    100% { transform : translateX(-150%); }
+}
+@-webkit-keyframes hide {
+    0% { -webkit-transform : translateX(0); }
+    100% { -webkit-transform : translateX(-150%); }
+}
+@-moz-keyframes hide {
+    0% { -moz-transform : translateX(0); }
+    100% { -moz-transform : translateX(-150%); }
+}
+@-o-keyframes hide {
+    0% { -o-transform : translateX(0); }
+    100% { -o-transform : translateX(-150%); }
 }
