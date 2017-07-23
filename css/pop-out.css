@@ -53,3 +53,49 @@
     0% { right : 0px; }
     100% { right : 100vw; }
 }
+
+.pop-out .menubar {
+    position : relative;
+    width : 100%;
+    height : auto;
+    display : block;
+}
+
+.pop-out .menubar.off {
+    display : none;
+}
+
+.pop-out .menubar.hide {
+    opacity : 0.0;
+    animation : hidewindow 1s;
+    -webkit-animation : hidewindow 1s;
+    -moz-animation : hidewindow 1s;
+    -o-animation : hidewindow 1s;
+}
+
+@keyframes hidewindow {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+@-webkit-keyframes hidewindow {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+@-moz-keyframes hidewindow {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+@-o-keyframes hidewindow {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+
+.pop-out .menubar button {
+    border-style : none;
+    height : auto;
+    width : 20%;
+    margin-left : 80%;
+    text-align : right;
+    background : transparent;
+    font-size : 2em;
+}

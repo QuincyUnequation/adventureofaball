@@ -4,6 +4,8 @@ function startgame() {
 }
 function showpreference() {
     $('#preferencewindow').rmClass('off');
+    $('#preferencewindow .menubar').rmClass('off');
+    $('#preferencewindow .menubar').rmClass('hide');
 }
 function showcareer() {
     $('#careerwindow').rmClass('off');
