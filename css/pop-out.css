@@ -24,15 +24,15 @@
     0% { right : 100vw; }
     100% { right : 0px; }
 }
-@-webkit-keyframes show {
+@-webkit-keyframes popout {
     0% { right : 100vw; }
     100% { right : 0px; }
 }
-@-moz-keyframes show {
+@-moz-keyframes popout {
     0% { right : 100vw; }
     100% { right : 0px; }
 }
-@-o-keyframes show {
+@-o-keyframes popout {
     0% { right : 100vw; }
     100% { right : 0px; }
 }
@@ -41,15 +41,15 @@
     0% { right : 0px; }
     100% { right : 100vw; }
 }
-@-webkit-keyframes show {
+@-webkit-keyframes pullback {
     0% { right : 0px; }
     100% { right : 100vw; }
 }
-@-moz-keyframes show {
+@-moz-keyframes pullback {
     0% { right : 0px; }
     100% { right : 100vw; }
 }
-@-o-keyframes show {
+@-o-keyframes pullback {
     0% { right : 0px; }
     100% { right : 100vw; }
 }
