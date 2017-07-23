@@ -5,10 +5,10 @@
     display : block;
     margin-left : 20px;
     margin-top : 20px;
-    animation : show 1s;
+    animation : show 1s;/*
     -webkit-animation : show 1s;
     -moz-animation : show 1s;
-    -o-animation : show 1s;
+    -o-animation : show 1s;*/
 }
 
 #start-up .button {
