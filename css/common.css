@@ -18,5 +18,6 @@ div.ui {
     right : 0px;
 }
 
+body { overflow : hidden;}
 
 div.ui .on { display : block; }
