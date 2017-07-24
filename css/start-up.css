@@ -147,6 +147,21 @@
 
 #heroselect {
     float : right;
+    animation : showsel 1s;
+    -webkit-animation : showsel 1s;
+    -moz-animation : showsel 1s;
+    -o-animation : showsel 1s;
+}
+
+#heroselect.off {
+    transform : translateX(calc(150% + 0.8em));
+    -webkit-transform : translateX(-webkit-calc(150% + 0.8em));
+    -moz-transform : translateX(-moz-calc(150% + 0.8em));
+    -o-transform : translateX(-o-calc(150% + 0.8em));
+    animation : hidesel 1s;
+    -webkit-animation : hidesel 1s;
+    -moz-animation : hidesel 1s;
+    -o-animation : hidesel 1s;
 }
 
 .heroselect {
@@ -167,12 +182,46 @@
 }
 
 .heroselect:hover, .heroselect:focus {
-transform : translateX(0px);
--webkit-transform : translateX(0px);
--moz-transform : translateX(0px);
--o-transform : translateX(0px);
+    transform : translateX(0px);
+    -webkit-transform : translateX(0px);
+    -moz-transform : translateX(0px);
+    -o-transform : translateX(0px);
 }
 
 .heroselect#nextball {
     float : right;
+}
+
+@keyframes showsel {
+    0% { transform : translateX(0.8em); }
+    100% { transform : translateX(0); }
+}
+@-webkit-keyframes showsel {
+    0% { -webkit-transform : translateX(0.8em); }
+    100% { -webkit-transform : translateX(0); }
+}
+@-moz-keyframes showsel {
+    0% { -moz-transform : translateX(0.8em); }
+    100% { -moz-transform : translateX(0); }
+}
+@-o-keyframes showsel {
+    0% { -o-transform : translateX(0.8em); }
+    100% { -o-transform : translateX(0); }
+}
+
+@keyframes hidesel {
+    0% { transform : translateX(0); }
+    100% { transform : translateX(calc(150% + 0.8em)); }
+}
+@-webkit-keyframes hidesel {
+    0% { -webkit-transform : translateX(0); }
+    100% { -webkit-transform : translateX(-webkit-calc(150% + 0.8em)); }
+}
+@-moz-keyframes hidesel {
+    0% { -moz-transform : translateX(0); }
+    100% { -moz-transform : translateX(-moz-calc(150% + 0.8em)); }
+}
+@-o-keyframes hidesel {
+    0% { -o-transform : translateX(0); }
+    100% { -o-transform : translateX(-o-calc(100% - 0.8em)); }
 }
