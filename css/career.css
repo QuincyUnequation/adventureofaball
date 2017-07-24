@@ -65,7 +65,20 @@ nav#heronav-c ul li.locked {
     font-weight : 300;
 }
 
-.contetnwindow article .off {
+.contetnwindow article.off {
     display : none;
     opacity : 0.0
+}
+
+.contentwindow article .herointro {
+    margin : auto;
+    margin-top : 1em;
+    margin-bottom : 1em;
+    width : calc(100% - 4em);
+    width : -webkit-calc(100% - 4em);
+    width : -moz-calc(100% - 4em);
+    width : -o-calc(100% - 4em);
+    background-color : rgba(255, 255, 255, 0.8);
+    display : block;
+    height : auto;
 }
