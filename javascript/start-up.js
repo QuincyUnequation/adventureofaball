@@ -9,8 +9,11 @@ function showpreference() {
 }
 function showcareer() {
     $('#careerwindow').rmClass('off');
+    $('#careerwindow .menubar').rmClass('off');
+    $('#careerwindow .menubar').rmClass('hide');
 }
 function showhelp() {
     $('#helpwindow').rmClass('off');
-
+    $('#helpwindow .menubar').rmClass('off');
+    $('#helpwindow .menubar').rmClass('hide');
 }
