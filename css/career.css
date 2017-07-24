@@ -57,17 +57,25 @@ nav#heronav-c ul li.locked {
     width : -moz-calc(100vw - 240px);
     width : -o-calc(100vw - 240px);
     opacity : 1.0;
-    transition : opacity 0.3s;
-    -webkit-transition : opacity 0.3s;
-    -moz-transition : opacity 0.3s;
-    -o-transition : opacity 0.3s;
     font-size : 2em;
     font-weight : 300;
+    animation : articleshow 1.2s;
+    -webkit-animation : articleshow 1.2s;
+    -moz-animation : articleshow 1.2s;
+    -o-animation : articleshow 1.2s;
+    overflow-y : scroll;
 }
 
-.contetnwindow article.off {
+.contentwindow article.off {
     display : none;
-    opacity : 0.0
+}
+
+.contentwindow article.hide {
+    opacity : 0.0;
+    animation : articlehide 0.8s;
+    -webkit-animation : articlehide 0.8s;
+    -moz-animation : articlehide 0.8s;
+    -o-animation : articlehide 0.8s;
 }
 
 .contentwindow article .herointro {
@@ -78,7 +86,61 @@ nav#heronav-c ul li.locked {
     width : -webkit-calc(100% - 4em);
     width : -moz-calc(100% - 4em);
     width : -o-calc(100% - 4em);
-    background-color : rgba(255, 255, 255, 0.8);
+    background-color : rgba(255, 255, 255, 0.5);
     display : block;
     height : auto;
+    padding : 1em;
+    box-shadow : 10px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes articleshow {
+    0% { opacity : 0.0; }
+    100% { opacity : 1.0; }
+}
+@-webkit-keyframes articleshow {
+    0% { opacity : 0.0; }
+    100% { opacity : 1.0; }
+}
+@-moz-keyframes articleshow {
+    0% { opacity : 0.0; }
+    100% { opacity : 1.0; }
+}
+@-o-keyframes articleshow {
+    0% { opacity : 0.0; }
+    100% { opacity : 1.0; }
+}
+
+@keyframes articlehide {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+@-webkit-keyframes articlehide {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+@-moz-keyframes articlehide {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+@-o-keyframes articlehide {
+    0% { opacity : 1.0; }
+    100% { opacity : 0.0; }
+}
+
+.contentwindow article .card {
+    font-size : 0.7em;
+    width : 25%;
+    margin-left : 1.5em;
+    margin-bottom : 3em;
+    display : inline-block;
+    box-shadow : 10px 10px 30px rgba(0, 0, 0, 0.2);
+    text-align : left;
+    font-weight : lighter;
+}
+
+.contentwindow article .card span {
+    font-size : 2em;
+    display : block;
+    text-align : center;
+    margin : auto;
 }

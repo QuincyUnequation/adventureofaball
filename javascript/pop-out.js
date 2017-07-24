@@ -12,6 +12,8 @@ function hidecareer() {
     $('#heroselect').rmClass('off');
     $('#start-up h1').rmClass('off');
     $('#start-up button.button').rmClass('off');
+    $('#careerwindow article.current-career').addClass('hide');
+    $('#careerwindow article.current-career').rmClass('current-career');
 }
 
 function hidehelp() {
