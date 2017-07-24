@@ -22,13 +22,38 @@
             <button type='button' class='button' id='help' onclick='showhelp()'>Help</button>
         </div>
         <div class='pop-out off' id='preferencewindow'>
-            <div class='menubar off'>
+            <div class='menubar o
+            ff'>
                 <button type='button' onclick='hidepreference()'>Back&gt;</button>
             </div>
         </div>
         <div class='pop-out off' id='careerwindow'>
             <div class='menubar off'>
                 <button type='button' onclick='hidecareer()'>Back&gt;</button>
+            </div>
+            <div class='contentwindow'>
+                <nav id='heronav-c'>
+                    <ul>
+                        <li id='allheron'><button class='heronav'>All Hero&gt;</button></li>
+                        <li id='noobn'><button class='heronav'>Noob&gt;</button></li>
+                        <li id='generaln' class='locked'><button class='heronav'>Genral&gt;</button></li>
+                        <li id='lordn' class='locked'><button class='heronav'>Lord&gt;</button></li>
+                        <li id='recallern' class='locked'><button class='heronav'>Recaller&gt;</button></li>
+                        <li id='samurain' class='locked'><button class='heronav'>Samurai&gt;</button></li>
+                    </ul>
+                </nav>
+                <article id='allheros' class='careerstatus'>
+                </article>
+                <article id='noobs' clas='careerstatus'>
+                </article>
+                <article id='generals' class='careerstatus locked'>
+                </article>
+                <article id='lords' class='careerstatus locked'>
+                </article>
+                <article id='recallers' class='careerstatus locked'>
+                </article>
+                <article id='samurais' class='careerstatus locked'>
+                </article>
             </div>
         </div>
         <div class='pop-out off' id='helpwindow'>
