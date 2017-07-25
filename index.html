@@ -9,6 +9,7 @@
         <script src='./javascript/elements-query.js'></script>
         <script src='./javascript/start-up.js'></script>
         <script src='./javascript/pop-out.js'></script>
+        <script src='./javascript/career.js'></script>
     </head>
     <body>
         <div id='start-up' class='ui on'>
@@ -18,14 +19,8 @@
                 <button type='button' class='heroselect' id='nextball' onclick='nexthero()'>&or;Next Hero</button>
             </div>
             <button type='button' class='button' id='startgame' onclick='startgame()'><span>BEGIN</span> my Adventure</button>
-            <button type='button' class='button' id='preference' onclick='showpreference()'>Preferences</button>
             <button type='button' class='button' id='career' onclick='showcareer()'>Career</button>
             <button type='button' class='button' id='help' onclick='showhelp()'>Help</button>
-        </div>
-        <div class='pop-out off' id='preferencewindow'>
-            <div class='menubar off'>
-                <button type='button' onclick='hidepreference()'>Back&gt;</button>
-            </div>
         </div>
         <div class='pop-out off' id='careerwindow'>
             <div class='menubar off'>
@@ -34,8 +29,8 @@
             <div class='contentwindow'>
                 <nav id='heronav-c'>
                     <ul>
-                        <li id='allheron'><button class='heronav'>All Hero&gt;</button></li>
-                        <li id='noobn'><button class='heronav'>Noob&gt;</button></li>
+                        <li id='allheron'><button class='heronav' onclick='switchcareertag(0)'>All Hero&gt;</button></li>
+                        <li id='noobn'><button class='heronav' onclick='switchcareertag(1)'>Noob&gt;</button></li>
                         <li id='generaln' class='locked'><button class='heronav'>Genral&gt;</button></li>
                         <li id='lordn' class='locked'><button class='heronav'>Lord&gt;</button></li>
                         <li id='recallern' class='locked'><button class='heronav'>Recaller&gt;</button></li>
@@ -82,6 +77,20 @@
                     </div>
                 </article>
                 <article id='noobs' class='careerstatus off'>
+                    <div class='herointro noobstatus'>
+                        Noob<span class='statusspan'>[Locked]</span>
+                        <span class='progressspan'>0/0</span>
+                        <span class='unitspan'>dusts</span>
+                    </div>
+                    <div class='card' id='alldust'>Dust Picked up
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='allpts'>Points Gain
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='allhplost'>Hit Points Lost
+                        <span class='cardcontent'>0</span>
+                    </div>
                 </article>
                 <article id='generals' class='careerstatus off'>
                 </article>
@@ -99,4 +108,5 @@
             </div>
         </div>
     </body>
+    <scrit src='./javascript/init.js'></script>
 </html>
