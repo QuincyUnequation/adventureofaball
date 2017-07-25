@@ -15,12 +15,14 @@ function showcareer() {
     $('#start-up h1').addClass('off');
     $('#start-up button.button').addClass('off');
     $('#heroselect').addClass('off');
+    $('#careerwindow .contentwindow').rmClass('off');
 }
 
 function showhelp() {
     $('#helpwindow').rmClass('off');
     $('#helpwindow .menubar').rmClass('off');
     $('#helpwindow .menubar').rmClass('hide');
+    $('#helpwindow .contentwindow').rmClass('off');
     $('#start-up h1').addClass('off');
     $('#start-up button.button').addClass('off');
     $('#heroselect').addClass('off')

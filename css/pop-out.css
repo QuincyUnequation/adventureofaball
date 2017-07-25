@@ -100,3 +100,11 @@
     font-size : 2em;
     line-height : 2em;
 }
+
+.contentwindow {
+    width : 100%;
+    height : calc(100vh - 2em);
+    height : -webkit-calc(100vh - 2em);
+    height : -moz-calc(100vh - 2em);
+    height : -o-calc(100vh - 2em);
+}

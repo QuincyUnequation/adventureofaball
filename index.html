@@ -6,6 +6,7 @@
         <link rel='stylesheet' type='text/css' href='./css/start-up.css' />
         <link rel='stylesheet' type='text/css' href='./css/pop-out.css' />
         <link rel='stylesheet' type='text/css' href='./css/career.css' />
+        <link rel='stylesheet' type='text/css' href='./css/help.css' />
         <script src='./javascript/elements-query.js'></script>
         <script src='./javascript/start-up.js'></script>
         <script src='./javascript/pop-out.js'></script>
@@ -26,7 +27,7 @@
             <div class='menubar off'>
                 <button type='button' onclick='hidecareer()'>Back&gt;</button>
             </div>
-            <div class='contentwindow'>
+            <div class='contentwindow off'>
                 <nav id='heronav-c'>
                     <ul>
                         <li id='allheron'><button class='heronav' onclick='switchcareertag(0)'>All Hero&gt;</button></li>
@@ -173,6 +174,37 @@
         <div class='pop-out off' id='helpwindow'>
             <div class='menubar off'>
                 <button type='button' onclick='hidehelp()'>Back&gt;</button>
+            </div>
+            <div class='contentwindow off'>
+                <article>
+                    <h2>What the game is about?</h2>
+                    <p>Your hero is an ordinary ball wanting to explore a geometry world. The longer distance you travel, the higher points you get. By avoidng traps and seizing bonus, you could improve your performance. By collecting fragments of armors, you can switch to new form and equip your hero with new skills.</p>
+                    <h2>Introduction to XP System</h2>
+                    <p>For every skill you own, you accumulate experience(XP) for stronger ablities. Dusts are props that help you obtain XP points.</p>
+                    <p>At level <var>x</var>, your hero obtain &lfloor;<var><span>1.03</span><sup>x</sup></var>&rfloor; point for every unit you travel. The enhancement on ablities will be stated below.</p>
+                    <p>Every normal dust will reward you <var>9</var> bonus points and <var>1</var> xp points for your current hero.</p>
+                    <h2>Introduction to Terrain System</h2>
+                    <p>There are several kinds of terrains which are listed below: plains, walls, thornies and slopes.</p>
+                    <p>When you bump into walls or step into thronies, you will be hurt. Bumping into a side wall or stepping on a spike, that is to say, into thronies, the damage will be a certain value <var>d</var> or your hit points left if your have hit points no more than <var>d</var>. Besides, bumping into walls just in front of you invites death.</p>
+                    <h2>Introduction to Weather System</h2>
+                    <p>There are several kinds of weather listed below: sunny, rainy, snowy and windy.</p>
+                    <p>Sunny weather is the most popular weather: it has no effect!</p>
+                    <p>Rainy weather will cause to slide for a distance whenever you touch the ground.</p>
+                    <p>Snowy weather will trap you for a while whenever you touch the ground.</p>
+                    <p>Windy weather will bring winds of random horizontal direction that endow you horizontal speed.</p>
+                    <h2>Introduction to Hero System</h2>
+                    <p>Preliminarily, you are given a plain hero [Noob], which has no skill. By collecting dusts of armor which has no bonus point, you are able to activate new armors. If your hero of this form is already activated, it will count as <var>10</var> xp points for this armor.</p>
+                    <h3>Noob</h3>
+                    <p>Noob has no skill.</p>
+                    <h3>General</h3>
+                    <p>At level <var>x</var>, every time you are hurt not lethally, <var>&lfloor;<span>20</span><sup>x + 1</sup>&rfloor;%</var> of the hit points lost will be restored in <span>2.5</span>s. The restoration can be interrupted by damage.</p>
+                    <h3>Lord</h3>
+                    <p>At level <var>x</var>, every time you pass bonus props on other lanes, you have a chance of <var>&lfloor;<span>50</span><sup>x + 1</sup>&rfloor;%</var> to seize the bonus.</p>
+                    <h3>Recaller</h3>
+                    <p>At level <var>x</var>, every time you suffer a lethal damage, you status 1 second ago will be restored. This ablity has a cooldown of <var><span>240</span>/<span>1.01<sup>x</sup></span>s</var>.</p>
+                    <h3>Samurai</h3>
+                    <p>At level <var>x</var>, every time you bump into a wall, you destory it with a cost of <var>&lcell;<span>70</span>/<span>1.11</span><sup>x</sup>&rcell;%</var> hit points you left. This ablity aha
+                </article>
             </div>
         </div>
     </body>
