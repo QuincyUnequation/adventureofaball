@@ -2,6 +2,12 @@ function startgame() {
     $('#start-up h1').addClass('off');
     $('#start-up button.button').addClass('off');
     $('#heroselect').addClass('off');
+    $('.herobar').rmClass('off');
+    $('.herobar').rmClass('hide');
+    $('.herobar').addClass('on');
+    $('.ptsgain').rmClass('off');
+    $('.ptsgain').rmClass('hide');
+    $('.ptsgain').addClass('on');
 }
 
 function showcareer() {

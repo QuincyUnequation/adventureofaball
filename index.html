@@ -7,6 +7,7 @@
         <link rel='stylesheet' type='text/css' href='./css/pop-out.css' />
         <link rel='stylesheet' type='text/css' href='./css/career.css' />
         <link rel='stylesheet' type='text/css' href='./css/help.css' />
+        <link rel='stylesheet' type='text/css' href='./css/gameplay.css' />
         <script src='./javascript/elements-query.js'></script>
         <script src='./javascript/start-up.js'></script>
         <script src='./javascript/pop-out.js'></script>
@@ -203,9 +204,20 @@
                     <h3>Recaller</h3>
                     <p>At level <var>x</var>, every time you suffer a lethal damage, you status 1 second ago will be restored. This ablity has a cooldown of <var><span>240</span>/<span>1.01<sup>x</sup></span>s</var>.</p>
                     <h3>Samurai</h3>
-                    <p>At level <var>x</var>, every time you bump into a wall, you destory it with a cost of <var>&lcell;<span>70</span>/<span>1.11</span><sup>x</sup>&rcell;%</var> hit points you left. This ablity aha
+                    <p>At level <var>x</var>, every time you bump into a wall, you destory it with a cost of <var>&lceil;<span>70</span>/<span>1.11</span><sup>x</sup>&rceil;%</var> hit points you left. This ablity has a cooldown of <var><span>240</span>/1.01<sup>x</sup></span>s<var>.</p>
                 </article>
             </div>
         </div>
+        <div class='herobar off' id='herohpcd'>
+            <span id='herohp'>
+                <span id='nameinfo'>[Name]|</span>
+                <span id='hpinfo'>0/0</span>hp
+            </span>
+            <span id='heroablity'>
+                //[Cooldown/ready]:[cd]s
+            </span>
+        </div>
+        <div class='msgpopout off' id='msg'></div>
+        <div class='ptsgain off' id='ingamepts'>0</div>
     </body>
 </html>

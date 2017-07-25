@@ -1,0 +1,183 @@
+.herobar {
+    position : fixed;
+    left : 0px;
+    bottom : 0px;
+    padding-left : 2em;
+    padding-bottom : 1em;
+    font-size : 1.2em;
+    width : auto;
+    height : auto;
+}
+
+.herobar.on{
+    animation : heroinfoshow 0.8s;
+    -webkit-animation : heroinfoshow 0.8s;
+    -moz-animation : heroinfoshow 0.8s;
+    -o-animation : heroinfoshow 0.8s;
+}
+
+.herobar span#herohp {
+    margin-right : 1em;
+}
+
+.herobar span#nameinfo {
+    font-size : 2em;
+    font-weight : 500;
+}
+
+.herobar.off {
+    bottom : -5em;
+}
+
+.herobar.hide {
+    bottom : -5em;
+    animation : heroinfohide 0,8s;
+    -webkit-animation : heroinfohide 0,8s;
+    -moz-animation : heroinfohide 0,8s;
+    -o-animation : heroinfohide 0,8s;
+}
+
+@keyframes heroinfoshow {
+    0%  { bottom : -5em; }
+    100% { bottom : 0px;}
+}
+@-webkit-keyframes heroinfoshow {
+    0%  { bottom : -5em; }
+    100% { bottom : 0px;}
+}
+@-moz-keyframes heroinfoshow {
+    0%  { bottom : -5em; }
+    100% { bottom : 0px;}
+}
+@-o-keyframes heroinfoshow {
+    0%  { bottom : -5em; }
+    100% { bottom : 0px;}
+}
+
+@keyframes heroinfohide {
+    0% { bottom : 0px; }
+    100% { bottom : -5em; }
+}
+@-webkit-keyframes heroinfohide {
+    0% { bottom : 0px; }
+    100% { bottom : -5em; }
+}
+@-moz-keyframes heroinfohide {
+    0% { bottom : 0px; }
+    100% { bottom : -5em; }
+}
+@-o-keyframes heroinfohide {
+    0% { bottom : 0px; }
+    100% { bottom : -5em; }
+}
+
+.msgpopout {
+    position : fixed;
+    width : 400px;
+    background : transparent;
+    height : auto;
+    top : 50vh;
+    right : 0;
+}
+
+.msgpopout.off {
+    right : -400px;
+}
+
+.msgpopout.on {
+    animation : msgshow 2s;
+    -webkit-animation : msgshow 2s;
+    -moz-animation : msgshow 2s;
+    -o-animation : msgshow 2s;
+}
+
+@keyframes msgshow {
+    0% { right : -400px; }
+    20% { right : 0px; }
+    80% { right : 0px; }
+    100% { right : -400px;}
+}
+@-webkit-keyframes msgshow {
+    0% { right : -400px; }
+    20% { right : 0px; }
+    80% { right : 0px; }
+    100% { right : -400px;}
+}
+@-moz-keyframes msgshow {
+    0% { right : -400px; }
+    20% { right : 0px; }
+    80% { right : 0px; }
+    100% { right : -400px;}
+}
+@-o-keyframes msgshow {
+    0% { right : -400px; }
+    20% { right : 0px; }
+    80% { right : 0px; }
+    100% { right : -400px;}
+}
+
+.ptsgain {
+    text-align : right;
+    padding-top : 1em;
+    padding-right : 2em;
+    position : fixed;
+    width : auto;
+    height : auto;
+    background : transparent;
+    top : 0px;
+    font-size : 2em;
+    right : 0px;
+}
+
+.ptsgain.on {
+    animation : ptsshow 1.5s;
+    -webkit-animation : ptsshow 1.5s;
+    -moz-animation : ptsshow 1.5s;
+    -o-animation : ptsshow 1.5s;
+}
+
+.ptsgain.off {
+    right : -500px;
+}
+
+.ptsgain.hide {
+    right : -500px;
+    animation : ptshide 1.5s;
+    -webkit-animation : ptshide 1.5s;
+    -moz-animation : ptshide 1.5s;
+    -o-animation : ptshide 1.5s;
+}
+
+@keyframes ptsshow {
+    0% { right : -500px; }
+    100% { right : 0px;}
+}
+@-webkit-keyframes ptsshow {
+    0% { right : -500px; }
+    100% { right : 0px;}
+}
+@-moz-keyframes ptsshow {
+    0% { right : -500px; }
+    100% { right : 0px;}
+}
+@-o-keyframes ptsshow {
+    0% { right : -500px; }
+    100% { right : 0px;}
+}
+
+@keyframes ptshide {
+    0% { right : 0px; }
+    100% { right : 0px; }
+}
+@-webkit-keyframes ptshide {
+    0% { right : 0px; }
+    100% { right : 0px; }
+}
+@-moz-keyframes ptshide {
+    0% { right : 0px; }
+    100% { right : 0px; }
+}
+@-o-keyframes ptshide {
+    0% { right : 0px; }
+    100% { right : 0px; }
+}
