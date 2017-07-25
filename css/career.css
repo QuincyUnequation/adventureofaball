@@ -72,6 +72,7 @@ nav#heronav-c ul li.locked {
 
 .contentwindow article.hide {
     opacity : 0.0;
+    height : 0;
     animation : articlehide 0.8s;
     -webkit-animation : articlehide 0.8s;
     -moz-animation : articlehide 0.8s;
@@ -111,20 +112,20 @@ nav#heronav-c ul li.locked {
 }
 
 @keyframes articlehide {
-    0% { opacity : 1.0; }
-    100% { opacity : 0.0; }
+    0% { opacity : 1.0; height : auto;}
+    100% { opacity : 0.0; height : 0;}
 }
 @-webkit-keyframes articlehide {
-    0% { opacity : 1.0; }
-    100% { opacity : 0.0; }
+    0% { opacity : 1.0; height : auto;}
+    100% { opacity : 0.0; height : 0;}
 }
 @-moz-keyframes articlehide {
-    0% { opacity : 1.0; }
-    100% { opacity : 0.0; }
+    0% { opacity : 1.0; height : auto;}
+    100% { opacity : 0.0; height : 0;}
 }
 @-o-keyframes articlehide {
-    0% { opacity : 1.0; }
-    100% { opacity : 0.0; }
+    0% { opacity : 1.0; height : auto;}
+    100% { opacity : 0.0; height : 0;}
 }
 
 .contentwindow article .card {

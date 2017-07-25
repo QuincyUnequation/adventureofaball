@@ -9,6 +9,7 @@ function showcareer() {
     $('#careerwindow .menubar').rmClass('off');
     $('#careerwindow .menubar').rmClass('hide');
     $('#careerwindow article').addClass('off');
+    $('#allheros').rmClass('off');
     $('#allheros').rmClass('hide');
     $('#allheros').addClass('current-career')
     $('#start-up h1').addClass('off');

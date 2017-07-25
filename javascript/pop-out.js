@@ -1,3 +1,4 @@
+
 function hidecareer() {
     $('#careerwindow .menubar').addClass('hide');
     $('#careerwindow').addClass('off');

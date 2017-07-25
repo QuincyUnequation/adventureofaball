@@ -31,7 +31,7 @@
                     <ul>
                         <li id='allheron'><button class='heronav' onclick='switchcareertag(0)'>All Hero&gt;</button></li>
                         <li id='noobn'><button class='heronav' onclick='switchcareertag(1)'>Noob&gt;</button></li>
-                        <li id='generaln' class='locked'><button class='heronav'>Genral&gt;</button></li>
+                        <li id='generaln' class='locked'><button class='heronav' onclick='switchcareertag(2)'>Genral&gt;</button></li>
                         <li id='lordn' class='locked'><button class='heronav'>Lord&gt;</button></li>
                         <li id='recallern' class='locked'><button class='heronav'>Recaller&gt;</button></li>
                         <li id='samurain' class='locked'><button class='heronav'>Samurai&gt;</button></li>
@@ -82,23 +82,91 @@
                         <span class='progressspan'>0/0</span>
                         <span class='unitspan'>dusts</span>
                     </div>
-                    <div class='card' id='alldust'>Dust Picked up
+                    <div class='card' id='noobdust'>Dust Picked up
                         <span class='cardcontent'>0</span>
                     </div>
-                    <div class='card' id='allpts'>Points Gain
+                    <div class='card' id='noobpts'>Points Gain
                         <span class='cardcontent'>0</span>
                     </div>
-                    <div class='card' id='allhplost'>Hit Points Lost
+                    <div class='card' id='noobhplost'>Hit Points Lost
                         <span class='cardcontent'>0</span>
                     </div>
                 </article>
                 <article id='generals' class='careerstatus off'>
+                    <div class='herointro generalstatus'>
+                        General<span class='statusspan'>[Locked]</span>
+                        <span class='progressspan'>0/0</span>
+                        <span class='unitspan'>dusts</span>
+                    </div>
+                    <div class='card' id='generaldust'>Dust Picked up
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='generalpts'>Points Gain
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='generalhplost'>Hit Points Lost
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='generalhprestore'>Hit Points Rerstore
+                        <span class='cardcontent'>0</span>
+                    </div>
                 </article>
                 <article id='lords' class='careerstatus off'>
+                    <div class='herointro lordstatus'>
+                        Lord<span class='statusspan'>[Locked]</span>
+                        <span class='progressspan'>0/0</span>
+                        <span class='unitspan'>dusts</span>
+                    </div>
+                    <div class='card' id='lorddust'>Dust Picked up
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='lordpts'>Points Gain
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='lordhplost'>Hit Points Lost
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='lordbonuspts'>Bonus Dust
+                        <span class='cardcontent'>0</span>
+                    </div>
                 </article>
                 <article id='recallers' class='careerstatus off'>
+                    <div class='herointro recallerstatus'>
+                        Recaller<span class='statusspan'>[Locked]</span>
+                        <span class='progressspan'>0/0</span>
+                        <span class='unitspan'>dusts</span>
+                    </div>
+                    <div class='card' id='recallerdust'>Dust Picked up
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='recallerpts'>Points Gain
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='recallerhplost'>Hit Points Lost
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='recallerrecalls'>Times of Recall
+                        <span class='cardcontent'>0</span>
+                    </div>
                 </article>
                 <article id='samurais' class='careerstatus off'>
+                    <div class='herointro samuraistatus'>
+                        Samurai<span class='statusspan'>[Locked]</span>
+                        <span class='progressspan'>0/0</span>
+                        <span class='unitspan'>dusts</span>
+                    </div>
+                    <div class='card' id='samuraidust'>Dust Picked up
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='samuraipts'>Points Gain
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='samuraihplost'>Hit Points Lost
+                        <span class='cardcontent'>0</span>
+                    </div>
+                    <div class='card' id='samuraitama'>Walls broken
+                        <span class='cardcontent'>0</span>
+                    </div>
                 </article>
             </div>
         </div>
@@ -108,5 +176,4 @@
             </div>
         </div>
     </body>
-    <scrit src='./javascript/init.js'></script>
 </html>

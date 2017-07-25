@@ -23,5 +23,6 @@ function switchcareertag(index) {
             break;
     }
     target.addClass('current-career');
+    target.rmClass('off');
     target.rmClass('hide');
 }
