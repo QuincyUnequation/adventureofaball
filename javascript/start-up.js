@@ -9,7 +9,7 @@ function startgame() {
     $('.ptsgain').rmClass('hide');
     $('.ptsgain').addClass('on');
     $('#gamezone').rmClass('off');
-    if (sys.heroselect >  2)
+    if (sys.heroselect >  1)
         $('#herohpcd #heroablity').rmClass('off');
     else
         $('#herohpcd #heroablity').addClass('off');
@@ -44,9 +44,9 @@ function updatetitle() {
             target.innerHTML = 'A Lord';
             break;
         case 3 :
-            target.innerHTML = 'A Recaller';
+            /*target.innerHTML = 'A Recaller';
             break;
-        case 4 :
+        case 4 :*/
             target.innerHTML = 'A Samurai';
             break;
         default :
@@ -82,4 +82,26 @@ function backtomenu() {
     $('#heroselect').rmClass('off');
     $('#start-up h1').rmClass('off');
     $('#start-up button.button').rmClass('off');
+}
+
+function resumegame() {
+    sys.initpausecntback(3);
+}
+
+function quitgame() {
+    hidepause();
+}
+
+function hidepause() {
+    $('#pausepop').rmClass('on');
+    $('#pausepop').addClass('hide');
+    sys.shutpause();
+}
+
+function restart() {
+    hidepause();
+}
+
+function endgame() {
+    hidepause();
 }

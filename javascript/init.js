@@ -5,6 +5,11 @@ var sys = new function() {
     this.msgdelay = 20;
     this.poptag;
     this.heroselect = 0;
+    this.pausecnter;
+    this.onpause = false;
+    this.pausedelay = 10;
+    this.onpausecntback = false;
+    this.pausecntbackcnter;
     setInterval(systimer, 100);
     this.addmsg = function(content) {
         if (typeof content == 'string')
@@ -90,10 +95,42 @@ var sys = new function() {
             }
         }
     }
+    this.shutpause = function() {
+        this.onpause = true;
+        this.pausecnter = 0;
+    }
+    this.cntpause = function() {
+        if (this.onpause) {
+            ++this.pausecnter;
+            if (this.pausecnter == this.pausedelay) {
+                $('#pausepop').rmClass('hide');
+                $('#pausepop').addClass('off');
+                this.onpause = false;
+            }
+        }
+    }
+    this.initpausecntback = function(delay) {
+        this.pausecntbackcnter = delay * 10;
+        this.onpausecntback = true;
+    }
+    this.pausecntback = function() {
+        if (this.onpausecntback) {
+            if (this.pausecntbackcnter % 10 == 0) {
+                $('#pausepop #pausecb').get(0).innerHTML = (this.pausecntbackcnter / 10).toString();
+            }
+            if (this.pausecntbackcnter == 8) {
+                this.onpausecntback = false;
+                hidepause();
+            }
+            --this.pausecntbackcnter;
+        }
+    }
 }();
 
 function systimer() {
     sys.popmsg();
+    sys.cntpause();
+    sys.pausecntback();
 }
 
 /*
