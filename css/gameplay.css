@@ -72,12 +72,14 @@
 }
 
 .msgpopout {
+    text-align : right;
     position : fixed;
     width : 400px;
     background : transparent;
     height : auto;
     top : 50vh;
-    right : 0;
+    right : -400px;
+    font-size : 2em;
 }
 
 .msgpopout.off {

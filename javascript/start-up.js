@@ -33,3 +33,9 @@ function showhelp() {
     $('#start-up button.button').addClass('off');
     $('#heroselect').addClass('off')
 }
+
+function backtomenu() {
+    $('#heroselect').rmClass('off');
+    $('#start-up h1').rmClass('off');
+    $('#start-up button.button').rmClass('off');
+}
