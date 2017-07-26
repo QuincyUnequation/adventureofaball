@@ -65,6 +65,9 @@ var sys = new function() {
         $('#samurais .card#samuraihplost .cardcontent').get(0).innerHTML = hplost.toString();
         $('#samurais .card#samuraisamuraitama .cardcontent').get(0).innerHTML = walls.toString();
     }
+    this.updatehp = function(cur, tot) {
+        $('#herohpcd #herohp #hpinfo').get(0).innerHTML = cur.toString() +'/' + tot.toString();
+    }
     this.modpts = function(pts) { $('#ingamepts').get(0).innerHTML = pts.toString(); }
     this.popmsg = function() {
         if (this.readytopopmsg && (this.msgtopop.length > 0)) {
