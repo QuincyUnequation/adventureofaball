@@ -5,6 +5,7 @@ var my_scene = {
 	items : [],
 	map : [],
 	map_box : [],
+	map_type : [],
 	hero_speed : 0.1,
 	timer_count : 0,
 	score : 0,
@@ -14,6 +15,8 @@ var my_scene = {
 	side_moving : 0,
 	jumping : 0,
 	rolling : 0,
+	hp_max : 100,
+	hp : 100,
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -74,8 +77,9 @@ var my_scene = {
 			this.items.push(it);
 			this.timer_count = 0;
 			
+			var type = Math.floor(Math.random() * 2);
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
-			material = new THREE.MeshBasicMaterial({color : 0x00ffff});
+			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
 			var ground = new THREE.Mesh(geometry, material);
 			ground.position.x = this.hero_sphere.position.x + 30;
 			ground.position.y = (Math.floor(Math.random() * 3) - 1) * 1.5;
@@ -85,6 +89,7 @@ var my_scene = {
 			var BoxHelper = new THREE.BoxHelper(ground, 0x000000);
 			this.map_box.push(BoxHelper);
 			this.scene.add(BoxHelper);
+			this.map_type.push(type);
 		}
 		var i = 0;
 		while(i < this.items.length){
@@ -119,6 +124,7 @@ var my_scene = {
 				this.scene.remove(this.map_box[i]);
 				this.map.splice(i, 1);
 				this.map_box.splice(i, 1);
+				this.map_type.splice(i, 1);
 			}
 			else{
 				var startx = this.map[i].position.x - this.map[i].geometry.parameters.width / 2;
@@ -146,6 +152,7 @@ var my_scene = {
 				if(starty - eps <= y && y - eps <= endy && startz - eps <= z && z - eps <= endz){
 					if(x - radius + eps < startx && x + radius + eps > startx){
 						this.endgame();
+						break;
 					}
 				}
 				if(Math.max(x - radius, startx) + eps < Math.min(x + radius, endx)){
@@ -154,12 +161,15 @@ var my_scene = {
 							z = startz - radius;
 							this.hero_sphere.position.z = z;
 							this.hero_speed_z = -this.hero_speed_z;
+							this.hp_change(-20);
 						}
 						if(z + radius - eps > endz && z - radius + eps < endz && this.hero_speed_z < 0){
-							console.log(z + radius, endz);
 							z = endz + radius;
 							this.hero_sphere.position.z = z;
 							this.touch_ground();
+							if(this.map_type[i] == 1){
+								this.hp_change(-20);
+							}
 						}
 					}
 					if(Math.max(z - radius, startz) + eps < Math.min(z + radius, endz)){
@@ -168,12 +178,14 @@ var my_scene = {
 							this.side_moving = Math.floor(Math.abs(this.map[i].position.y - 1.5 - y) / 0.05);
 							this.hero_speed_y = -0.05;
 							this.hero_sphere.position.y = y;
+							this.hp_change(-20);
 						}
 						if(y + radius - eps > endy && y - radius + eps < endy){
 							y = endy + radius;
 							this.side_moving = Math.floor(Math.abs(this.map[i].position.y + 1.5 - y) / 0.05);
 							this.hero_speed_y = 0.05;
 							this.hero_sphere.position.y = y;
+							this.hp_change(-20);
 						}
 					}
 				}
@@ -222,6 +234,7 @@ var my_scene = {
 		this.items = [];
 		this.map = [];
 		this.map_box = [];
+		this.map_type = [];
 		this.hero_speed = 0.1;
 		this.hero_speed_y = 0;
 		this.hero_speed_z = 0;
@@ -230,6 +243,18 @@ var my_scene = {
 		this.rolling = 0;
 		this.timer_count = 0;
 		this.score = 0;
+		this.hp = 100;
+	},
+	hp_change : function(delta){
+		this.hp += delta;
+		if(this.hp > this.hp_max){
+			this.hp == this.hp_max;
+		}
+		if(this.hp <= 0){
+			this.hp = 0;
+			this.endgame();
+		}
+		console.log(this.hp, "/", this.hp_max);
 	}
 };
 
