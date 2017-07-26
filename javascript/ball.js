@@ -76,7 +76,7 @@ var my_scene = {
 			this.scene.add(it.item);
 			this.items.push(it);
 			this.timer_count = 0;
-			
+
 			var type = Math.floor(Math.random() * 2);
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
 			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
@@ -254,7 +254,7 @@ var my_scene = {
 			this.hp = 0;
 			this.endgame();
 		}
-		console.log(this.hp, "/", this.hp_max);
+        sys.updatehp(this.hp, this.hp_max);
 	}
 };
 
@@ -288,6 +288,7 @@ function init(){
 	my_scene.camera.up.z = 1;
 	my_scene.camera.lookAt({x : 3, y : 0, z : 0,});
 	my_scene.game_init();
+    sys.updatehp(my_scene.hp_max, my_scene.hp_max);
 	my_timer = setInterval(timer, 16);
 }
 
