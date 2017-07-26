@@ -109,7 +109,7 @@ var my_scene = {
 				this.scene.remove(it);
 				this.items.splice(i, 1);
 				++this.score;
-                sys.addmsg(this.score.toString());
+                sys.modpts(this.score);
 			}
 			else {
 				++i;

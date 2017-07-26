@@ -9,6 +9,7 @@ var sys = new function() {
         if (typeof content == 'string')
             this.msgtopop.push(content);
     }
+    this.modpts = function(pts) { $('#ingamepts').get(0).innerHTML = pts.toString(); }
     this.popmsg = function() {
         if (this.readytopopmsg && (this.msgtopop.length > 0)) {
             this.readytopopmsg = false;
