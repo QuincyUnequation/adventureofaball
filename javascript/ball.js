@@ -17,6 +17,7 @@ var my_scene = {
 	rolling : 0,
 	hp_max : 100,
 	hp : 100,
+	damaged : 0,
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -32,6 +33,9 @@ var my_scene = {
 		}
 	},
 	update : function(){
+		if(this.damaged > 0){
+			--this.damaged;
+		}
 		this.hero_sphere.position.x += this.hero_speed;
 		this.camera.position.x += this.hero_speed;
 		if(this.rolling > 0 && this.rolling <= 30){
@@ -246,7 +250,12 @@ var my_scene = {
 		this.hp = 100;
 	},
 	hp_change : function(delta){
-		this.hp += delta;
+		if(delta > 0 || (delta < 0 && this.damaged == 0)){
+			this.hp += delta;
+			if(delta < 0){
+				this.damaged = 20;
+			}
+		}
 		if(this.hp > this.hp_max){
 			this.hp == this.hp_max;
 		}
@@ -254,7 +263,7 @@ var my_scene = {
 			this.hp = 0;
 			this.endgame();
 		}
-        sys.updatehp(this.hp, this.hp_max);
+    sys.updatehp(this.hp, this.hp_max);
 	}
 };
 
@@ -288,7 +297,7 @@ function init(){
 	my_scene.camera.up.z = 1;
 	my_scene.camera.lookAt({x : 3, y : 0, z : 0,});
 	my_scene.game_init();
-    sys.updatehp(my_scene.hp_max, my_scene.hp_max);
+	sys.updatehp(my_scene.hp, my_scene.hp_max);
 	my_timer = setInterval(timer, 16);
 }
 
