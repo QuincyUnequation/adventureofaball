@@ -9,6 +9,10 @@ function startgame() {
     $('.ptsgain').rmClass('hide');
     $('.ptsgain').addClass('on');
     $('#gamezone').rmClass('off');
+    if (sys.heroselect >  2)
+        $('#herohpcd #heroablity').rmClass('off');
+    else
+        $('#herohpcd #heroablity').addClass('off');
     init();
 }
 

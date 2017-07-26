@@ -25,6 +25,10 @@
     font-weight : 500;
 }
 
+#herohpcd #heroablity.off {
+    display : none;
+}
+
 .herobar.off {
     bottom : -5em;
 }

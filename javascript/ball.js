@@ -80,7 +80,7 @@ var my_scene = {
 			this.scene.add(it.item);
 			this.items.push(it);
 			this.timer_count = 0;
-			
+
 			var type = Math.floor(Math.random() * 2);
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
 			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
@@ -263,7 +263,7 @@ var my_scene = {
 			this.hp = 0;
 			this.endgame();
 		}
-		sys.updatehp(this.hp, this.hp_max);
+    sys.updatehp(this.hp, this.hp_max);
 	}
 };
 
