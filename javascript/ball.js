@@ -1,8 +1,10 @@
 var eps = 1e-10;
 var my_timer;
+var first = 1;
 var my_scene = {
 	items : [],
 	map : [],
+	map_box : [],
 	hero_speed : 0.1,
 	timer_count : 0,
 	score : 0,
@@ -34,9 +36,6 @@ var my_scene = {
 		}
 		this.hero_speed_z -= this.gravity;
 		this.hero_sphere.position.z += this.hero_speed_z;
-		/*if(this.jumping){
-			console.log(this.hero_sphere.position.z);
-		}*/
 		if(this.hero_sphere.position.z - this.hero_sphere.geometry.parameters.radius + eps < 0){
 			this.hero_sphere.position.z = this.hero_sphere.geometry.parameters.radius;
 			this.touch_ground();
@@ -59,10 +58,6 @@ var my_scene = {
 				this.hero_sphere.position.y = which;
 			}
 		}
-		/*cylinder.position.x += this.hero_speed;
-		wireframe.position.x += this.hero_speed;
-		cylinder.rotation.z += 0.01;
-		wireframe.rotation.z += 0.01;*/
 		++this.timer_count;
 		if(this.timer_count == 120){
 			var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
@@ -78,7 +73,7 @@ var my_scene = {
 			this.scene.add(it.item);
 			this.items.push(it);
 			this.timer_count = 0;
-
+			
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
 			material = new THREE.MeshBasicMaterial({color : 0x00ffff});
 			var ground = new THREE.Mesh(geometry, material);
@@ -88,6 +83,7 @@ var my_scene = {
 			this.scene.add(ground);
 			this.map.push(ground);
 			var BoxHelper = new THREE.BoxHelper(ground, 0x000000);
+			this.map_box.push(BoxHelper);
 			this.scene.add(BoxHelper);
 		}
 		var i = 0;
@@ -109,7 +105,7 @@ var my_scene = {
 				this.scene.remove(it);
 				this.items.splice(i, 1);
 				++this.score;
-                sys.modpts(this.score);
+				sys.modpts(this.score);
 			}
 			else {
 				++i;
@@ -120,7 +116,9 @@ var my_scene = {
 			var it = this.map[i];
 			if(it.position.x - this.hero_sphere.position.x + eps < -13){
 				this.scene.remove(it);
+				this.scene.remove(this.map_box[i]);
 				this.map.splice(i, 1);
+				this.map_box.splice(i, 1);
 			}
 			else{
 				var startx = this.map[i].position.x - this.map[i].geometry.parameters.width / 2;
@@ -147,18 +145,17 @@ var my_scene = {
 				}
 				if(starty - eps <= y && y - eps <= endy && startz - eps <= z && z - eps <= endz){
 					if(x - radius + eps < startx && x + radius + eps > startx){
-						console.log("hit!");
+						this.endgame();
 					}
 				}
 				if(Math.max(x - radius, startx) + eps < Math.min(x + radius, endx)){
 					if(Math.max(y - radius, starty) + eps < Math.min(y + radius, endy)){
 						if(z - radius + eps < startz && z + radius - eps > startz){
-							console.log("down touch!");
 							z = startz - radius;
 							this.hero_sphere.position.z = z;
+							this.hero_speed_z = -this.hero_speed_z;
 						}
 						if(z + radius - eps > endz && z - radius + eps < endz && this.hero_speed_z < 0){
-							console.log("up touch!");
 							console.log(z + radius, endz);
 							z = endz + radius;
 							this.hero_sphere.position.z = z;
@@ -167,14 +164,12 @@ var my_scene = {
 					}
 					if(Math.max(z - radius, startz) + eps < Math.min(z + radius, endz)){
 						if(y - radius + eps < starty && y + radius - eps > starty){
-							console.log("right touch!");
 							y = starty - radius;
 							this.side_moving = Math.floor(Math.abs(this.map[i].position.y - 1.5 - y) / 0.05);
 							this.hero_speed_y = -0.05;
 							this.hero_sphere.position.y = y;
 						}
 						if(y + radius - eps > endy && y - radius + eps < endy){
-							console.log("left touch!");
 							y = endy + radius;
 							this.side_moving = Math.floor(Math.abs(this.map[i].position.y + 1.5 - y) / 0.05);
 							this.hero_speed_y = 0.05;
@@ -185,7 +180,6 @@ var my_scene = {
 				++i;
 			}
 		}
-		this.renderer.render(this.scene, this.camera);
 	},
 	keydown : function(e){
 		if(e.keyCode == 37){
@@ -213,28 +207,54 @@ var my_scene = {
 				this.rolling = 60;
 			}
 		}
+	},
+	endgame : function(){
+		clearInterval(my_timer);
+	},
+	game_init : function(){
+		for(var i = 0; i < this.items.length; ++i){
+			this.scene.remove(this.items[i].item);
+		}
+		for(var i = 0; i < this.map.length; ++i){
+			this.scene.remove(this.map[i]);
+			this.scene.remove(this.map_box[i]);
+		}
+		this.items = [];
+		this.map = [];
+		this.map_box = [];
+		this.hero_speed = 0.1;
+		this.hero_speed_y = 0;
+		this.hero_speed_z = 0;
+		this.side_moving = 0;
+		this.jumping = 0;
+		this.rolling = 0;
+		this.timer_count = 0;
+		this.score = 0;
 	}
 };
 
 function timer() {
 	my_scene.update();
+	my_scene.renderer.render(my_scene.scene, my_scene.camera);
 }
 
 function init(){
-	my_scene.scene = new THREE.Scene();
-	my_scene.camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight, 0.1, 1000);
-	my_scene.timer = 0;
-	my_scene.renderer = new THREE.WebGLRenderer();
-	my_scene.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
-	my_scene.renderer.setClearColor(0x7f7f7f);
-	$('#gamezone').get(0).appendChild(my_scene.renderer.domElement);
+	if(first){
+		my_scene.scene = new THREE.Scene();
+		my_scene.camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight, 0.1, 1000);
+		my_scene.timer = 0;
+		my_scene.renderer = new THREE.WebGLRenderer();
+		my_scene.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
+		my_scene.renderer.setClearColor(0x7f7f7f);
+		document.body.appendChild(my_scene.renderer.domElement);
+		first = 0;
+		var geometry = new THREE.SphereGeometry(0.25, 32, 32);
+		var material = new THREE.MeshBasicMaterial({color : 0xffffff});
+		my_scene.hero_sphere = new THREE.Mesh(geometry, material);
+	}
 
-	var geometry = new THREE.SphereGeometry(0.25, 32, 32);
-	var material = new THREE.MeshBasicMaterial({color : 0xffffff});
-	my_scene.hero_sphere = new THREE.Mesh(geometry, material);
 	my_scene.hero_sphere.position.z = 0.25;
 	my_scene.scene.add(my_scene.hero_sphere);
-
 	my_scene.camera.position.x = -5;
 	my_scene.camera.position.y = 0;
 	my_scene.camera.position.z = 5;
@@ -242,7 +262,7 @@ function init(){
 	my_scene.camera.up.y = 0;
 	my_scene.camera.up.z = 1;
 	my_scene.camera.lookAt({x : 3, y : 0, z : 0,});
-
+	my_scene.game_init();
 	my_timer = setInterval(timer, 16);
 }
 
