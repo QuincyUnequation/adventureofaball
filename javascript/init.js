@@ -4,10 +4,21 @@ var sys = new function() {
     this.msgdelaycnter;
     this.msgdelay = 20;
     this.poptag;
+    this.heroselect = 0;
     setInterval(systimer, 100);
     this.addmsg = function(content) {
         if (typeof content == 'string')
             this.msgtopop.push(content);
+    }
+    this.updateallhero = function(dis, d, pts, hplost) {
+        $('.card#alldis .cardcontent').get(0).innerHTML = dis.toString();
+        $('.card#alldust .cardcontent').get(0).innerHTML = d.toString();
+        $('.card#allpts .cardcontent').get(0).innerHTML = pts.toString();
+        $('.card#allhplost .cardcontent').get(0).innerHTML = hplost.toString();
+    }
+    this.updatenoob = function(lv, collected, tocollect, d, pts, hplost) {
+        $('#allheros .herointro.noobstatus .statussapn').get(0).innerHTML = 'Lv.' + lv.toString();
+        $('#allheros .herointro.noobstatus .progresspan').get(0).innerHTML = collected.toString() + '/' + tocollect.toString();
     }
     this.modpts = function(pts) { $('#ingamepts').get(0).innerHTML = pts.toString(); }
     this.popmsg = function() {
