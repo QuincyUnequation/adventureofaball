@@ -8,6 +8,8 @@ function startgame() {
     $('.ptsgain').rmClass('off');
     $('.ptsgain').rmClass('hide');
     $('.ptsgain').addClass('on');
+    $('#gamezone').rmClass('off');
+    init();
 }
 
 function showcareer() {
