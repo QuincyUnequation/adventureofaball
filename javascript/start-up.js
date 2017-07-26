@@ -16,6 +16,44 @@ function startgame() {
     init();
 }
 
+function prevhero() {
+    --sys.heroselect;
+    sys.heroselect += 5;
+    sys.heroselect %= 5;
+    updatehero();
+}
+
+function nexthero() {
+    ++sys.heroselect;
+    sys.heroselect += 5;
+    sys.heroselect %= 5;
+    updatehero();
+}
+
+function updatehero() {
+    updatetitle();
+}
+
+function updatetitle() {
+    var target = $('#start-up h1 span').get(0);
+    switch (sys.heroselect) {
+        case 1 :
+            target.innerHTML = 'A General';
+            break;
+        case 2 :
+            target.innerHTML = 'A Lord';
+            break;
+        case 3 :
+            target.innerHTML = 'A Recaller';
+            break;
+        case 4 :
+            target.innerHTML = 'A Samurai';
+            break;
+        default :
+            target.innerHTML = 'A Ball';
+    }
+}
+
 function showcareer() {
     $('#careerwindow').rmClass('off');
     $('#careerwindow .menubar').rmClass('off');
