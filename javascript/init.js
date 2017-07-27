@@ -1,4 +1,4 @@
-var sys = new function() {
+ptsvar sys = new function() {
     this.msgtopop = new Array();
     this.readytopopmsg = true;
     this.msgdelaycnter;
@@ -13,6 +13,56 @@ var sys = new function() {
     this.findelay = 10;
     this.onpausecntback = false;
     this.pausecntbackcnter;
+    this.careerdata = filex.load();
+    this.lvl = function(x) {
+        if (x > -1)
+            return '[Lv.' + x.toString() + ']';
+        else
+            return '[Locked]';
+    }
+    this.dis = function() {
+        return this.careerdata.noob.dis + this.careerdata.general.dis + this.careerdata.lord.dis + this.careerdata.samurai.dis;
+    }
+    this.dust = function() {
+        return this.careerdata.noob.dust + this.careerdata.general.dust + this.careerdata.lord.dust + this.careerdata.samurai.dust;
+    }
+    this.pts = function() {
+        return this.careerdata.noob.pts + this.careerdata.general.pts + this.careerdata.lord.pts + this.careerdata.samurai.pts;
+    }
+    this.hplost = function() {
+        return this.careerdata.noob.hplost + this.careerdata.general.hplost + this.careerdata.lord.hplost + this.careerdata.samurai.hplost;
+    }
+    this.xp = function(index, current) { return current.toString() + '/' + (index * Math.pow(2, index)).toString(); }
+    this.updatecareer = function() {
+        $('#allheros .noobstatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.noob.lv);
+        $('#noobs .noobstatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.noob.lv);
+        $('#noobs .noobstatus .progresspan').get(0).innerHTML = this.xp(this.careerdata.noob.lv, this.career.noob.dust);
+        $('#noobs #noobdust .cardcontent').get(0).innerHTML = this.careerdata.noob.dust.toString();
+        $('#noobs #noobpts .cardcontent').get(0).innerHTML = this.careerdata.noob.pts.toString();
+        $('#noobs #noobhplost .cardcontent').get(0).innerHTML = this.careerdta.noob.hplost.toString();
+        $('#allheros .generalstatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.general.lv);
+        $('#generals .generalstatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.general.lv);
+        $('#generals .generalstatus .progresspan').get(0).innerHTML = this.xp(this.careerdata.general.lv, this.career.general.dust);
+        $('#generals #generaldust .cardcontent').get(0).innerHTML = this.careerdata.general.dust.toString();
+        $('#generals #generalpts .cardcontent').get(0).innerHTML = this.careerdata.general.pts.toString();
+        $('#generals #generalhplost .cardcontent').get(0).innerHTML = this.careerdta.general.hplost.toString();
+        $('#allheros .lordstatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.lord.lv);
+        $('#lords .lordstatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.lord.lv);
+        $('#lords .lordstatus .progresspan').get(0).innerHTML = this.xp(this.careerdata.lord.lv, this.career.lord.dust);
+        $('#lords #lorddust .cardcontent').get(0).innerHTML = this.careerdata.lord.dust.toString();
+        $('#lords #lordpts .cardcontent').get(0).innerHTML = this.careerdata.lord.pts.toString();
+        $('#lords #lordhplost .cardcontent').get(0).innerHTML = this.careerdta.lord.hplost.toString();
+        $('#allheros .samuraistatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.samurai.lv);
+        $('#samurais .samuraistatus .statusspan').get(0).innerHTML = this.lvl(this.careerdata.samurai.lv);
+        $('#samurais .samuraistatus .progresspan').get(0).innerHTML = this.xp(this.careerdata.samurai.lv, this.career.samurai.dust);
+        $('#samurais #samuraidust .cardcontent').get(0).innerHTML = this.careerdata.samurai.dust.toString();
+        $('#samurais #samuraipts .cardcontent').get(0).innerHTML = this.careerdata.samurai.pts.toString();
+        $('#samurais #samuraihplost .cardcontent').get(0).innerHTML = this.careerdta.samurai.hplost.toString();
+        $('#allheros #alldis .cardcontent').get(0).innerHTML = this.dis().toString();
+        $('#allheros #alldust .cardcontent').get(0).innerHTML = this.dust().toString();
+        $('#allheros #allpts .cardcontent').get(0).innerHTML = this.pts().toString();
+        $('#allheros #allhplost .cardcontent').get(0).innerHTML = this.hplost().toString();
+    }
     setInterval(systimer, 100);
     this.addmsg = function(content) {
         if (typeof content == 'string')
