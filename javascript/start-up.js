@@ -1,4 +1,8 @@
 function startgame() {
+    if (!$('#start-up button.button').hasClass('off')) {
+        console.log('reach');
+        init();
+    }
     $('#start-up h1').addClass('off');
     $('#start-up button.button').addClass('off');
     $('#heroselect').addClass('off');
@@ -13,24 +17,29 @@ function startgame() {
         $('#herohpcd #heroablity').rmClass('off');
     else
         $('#herohpcd #heroablity').addClass('off');
-    init();
 }
 
 function prevhero() {
     --sys.heroselect;
     sys.heroselect += 4;
     sys.heroselect %= 4;
-    updatehero();
+    while (sys.locked()) {
+        --sys.heroselect;
+        sys.heroselect += 4;
+        sys.heroselect %= 4;
+    }
+    updatetitle();
 }
 
 function nexthero() {
     ++sys.heroselect;
     sys.heroselect += 4;
     sys.heroselect %= 4;
-    updatehero();
-}
-
-function updatehero() {
+    while (sys.locked()) {
+        ++sys.heroselect;
+        sys.heroselect += 4;
+        sys.heroselect %= 4;
+    }
     updatetitle();
 }
 
@@ -82,14 +91,22 @@ function backtomenu() {
     $('#heroselect').rmClass('off');
     $('#start-up h1').rmClass('off');
     $('#start-up button.button').rmClass('off');
+    $('#gamezone').addClass('off');
+    $('#herohpcd').rmClass('on');
+    $('#herohpcd').addClass('hide');
+    $('#ingamepts').rmClass('on');
+    $('#ingamepts').addClass('off');
 }
 
 function resumegame() {
-    sys.initpausecntback(3);
+    if (!sys.onpausecntback && $('#pausepop').hasClass('on'))
+        sys.initpausecntback(3);
 }
 
 function quitgame() {
     hidepause();
+    my_scene.endgame(true);
+    backtomenu();
 }
 
 function showpause() {
@@ -105,12 +122,14 @@ function hidepause() {
 }
 
 function restart() {
-    init();
+    if ($('#finpop').hasClass('on'))
+        init();
     hidefin();
 }
 
 function endgame() {
     hidefin();
+    backtomenu();
 }
 
 function hidefin() {
