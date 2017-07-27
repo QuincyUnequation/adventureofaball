@@ -59,11 +59,11 @@
                         <span class='progressspan'>0/0</span>
                         <span class='unitspan'>dusts</span>
                     </div>
-                    <div class='herointro recallerstatus'>
+                    <!--<div class='herointro recallerstatus'>
                         Recaller<span class='statusspan'>[Locked]</span>
                         <span class='progressspan'>0/0</span>
                         <span class='unitspan'>dusts</span>
-                    </div>
+                    </div>-->
                     <div class='herointro samuraistatus'>
                         Samurai<span class='statusspan'>[Locked]</span>
                         <span class='progressspan'>0/0</span>
@@ -136,7 +136,7 @@
                         <span class='cardcontent'>0</span>
                     </div>
                 </article>
-                <article id='recallers' class='careerstatus off'>
+                <!--<article id='recallers' class='careerstatus off'>
                     <div class='herointro recallerstatus'>
                         Recaller<span class='statusspan'>[Locked]</span>
                         <span class='progressspan'>0/0</span>
@@ -154,7 +154,7 @@
                     <div class='card' id='recallerrecalls'>Times of Recall
                         <span class='cardcontent'>0</span>
                     </div>
-                </article>
+                </article>-->
                 <article id='samurais' class='careerstatus off'>
                     <div class='herointro samuraistatus'>
                         Samurai<span class='statusspan'>[Locked]</span>
@@ -189,14 +189,14 @@
                     <p>At level <var>x</var>, your hero obtain &lfloor;<var><span>1.03</span><sup>x</sup></var>&rfloor; point for every unit you travel. The enhancement on ablities will be stated below.</p>
                     <p>Every normal dust will reward you <var>9</var> bonus points and <var>1</var> xp points for your current hero.</p>
                     <h2>Introduction to Terrain System</h2>
-                    <p>There are several kinds of terrains which are listed below: plains, walls, thornies and slopes.</p>
+                    <p>There are several kinds of terrains which are listed below: plains, walls and thornies.</p>
                     <p>When you bump into walls or step into thronies, you will be hurt. Bumping into a side wall or stepping on a spike, that is to say, into thronies, the damage will be a certain value <var>d</var> or your hit points left if your have hit points no more than <var>d</var>. Besides, bumping into walls just in front of you invites death.</p>
-                    <h2>Introduction to Weather System</h2>
+                    <!--<h2>Introduction to Weather System</h2>
                     <p>There are several kinds of weather listed below: sunny, rainy, snowy and windy.</p>
                     <p>Sunny weather is the most popular weather: it has no effect!</p>
                     <p>Rainy weather will cause to slide for a distance whenever you touch the ground.</p>
                     <p>Snowy weather will trap you for a while whenever you touch the ground.</p>
-                    <p>Windy weather will bring winds of random horizontal direction that endow you horizontal speed.</p>
+                    <p>Windy weather will bring winds of random horizontal direction that endow you horizontal speed.</p>-->
                     <h2>Introduction to Hero System</h2>
                     <p>Preliminarily, you are given a plain hero [Noob], which has no skill. By collecting dusts of armor which has no bonus point, you are able to activate new armors. If your hero of this form is already activated, it will count as <var>10</var> xp points for this armor.</p>
                     <h3>Noob</h3>
@@ -204,9 +204,9 @@
                     <h3>General</h3>
                     <p>At level <var>x</var>, every time you are hurt not lethally, <var>&lfloor;<span>20</span><sup>x + 1</sup>&rfloor;%</var> of the hit points lost will be restored in <span>2.5</span>s. The restoration can be interrupted by damage.</p>
                     <h3>Lord</h3>
-                    <p>At level <var>x</var>, every time you pass bonus props on other lanes, you have a chance of <var>&lfloor;<span>50</span><sup>x + 1</sup>&rfloor;%</var> to seize the bonus.</p>
-                    <h3>Recaller</h3>
-                    <p>At level <var>x</var>, every time you suffer a lethal damage, you status 1 second ago will be restored. This ablity has a cooldown of <var><span>240</span>/<span>1.01<sup>x</sup></span>s</var>.</p>
+                    <p>At level <var>x</var>, every time you pass bonus props on other lanes, you have a chance to seize a bonus.This ablity has a cooldown of <var><span>10</span>/1.01<sup>x</sup></span>s<var>.</p>
+                    <!--<h3>Recaller</h3>
+                    <p>At level <var>x</var>, every time you suffer a lethal damage, you status 1 second ago will be restored. This ablity has a cooldown of <var><span>240</span>/<span>1.01<sup>x</sup></span>s</var>.</p>-->
                     <h3>Samurai</h3>
                     <p>At level <var>x</var>, every time you bump into a wall, you destory it with a cost of <var>&lceil;<span>70</span>/<span>1.11</span><sup>x</sup>&rceil;%</var> hit points you left. This ablity has a cooldown of <var><span>240</span>/1.01<sup>x</sup></span>s<var>.</p>
                 </article>
@@ -218,9 +218,22 @@
                 <span id='hpinfo'>0/0</span>hp
             </span>
             <span id='heroablity'>
-                //[Cooldown/ready]:[cd]s
+                //<span>[Cooldown/ready]:[cd]s</span>
             </span>
         </div>
+        <div class='in-gamepop off' id='pausepop'>
+            <div class='in-gamecb' id='pausecb'>Current Point : 0</div>
+            <div class='in-gamebb' id='pausebb'>
+                <button type='button' onclick='resumegame()'>Resume</button>
+                <button type='button' onclick='quitgame()'>Back to Menu</button>
+            </div>
+        </div>
+        <div class='in-gamepop off' id='finpop'>
+            <div class='in-gamecb' id='fincb'>Final Point : 0</div>
+            <div class='in-gamebb' id='finbb'>
+                <button type='button' onclick='restart()'>Restart</button>
+                <button type='button' onclick='endgame()'>Back to Menu</button>
+            </div></div>
         <div class='msgpopout off' id='msg'>Test</div>
         <div class='ptsgain off' id='ingamepts'>0</div>
     </body>

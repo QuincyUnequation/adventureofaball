@@ -187,3 +187,108 @@
     0% { right : 0px; }
     100% { right : 0px; }
 }
+
+.in-gamepop {
+    font-size : 1em;
+    padding : calc((100vh - 3em) / 4) 0;
+    padding : -webkit-calc((100vh - 3em) / 4) 0;
+    padding : -moz-calc((100vh - 3em) / 4) 0;
+    padding : -o-calc((100vh - 3em) / 4) 0;
+    position : fixed;
+    width : 100vw;
+    height : 100vh;
+    top : 0px;
+    left : 0px;
+    background-color : rgba(189, 192, 186, 0.2);
+}
+
+.in-gamepop.off {
+    display : none;
+}
+
+.in-gamepop.on {
+    opacity : 1;
+    animation : showingamepop 0.8s;
+    -webkit-animation : showingamepop 0.8s;
+    -moz-animation : showingamepop 0.8s;
+    -o-animation : showingamepop 0.8s;
+}
+
+.in-gamepop.hide {
+    opacity : 0;
+    animation : hideingamepop 0.8s;
+    -webkit-animation : hideingamepop 0.8s;
+    -moz-animation : hideingamepop 0.8s;
+    -o-animation : hideingamepop 0.8s;
+}
+
+.in-gamecb {
+    position : relative;
+    padding : calc((100vh - 3em) / 4) 0;
+    padding : -webkit-calc((100vh - 3em) / 4) 0;
+    padding : -moz-calc((100vh - 3em) / 4) 0;
+    padding : -o-calc((100vh - 3em) / 4) 0;
+    background-color : rgba(189, 192, 186, 0.4);
+    font-size : 3em;
+    text-align : center;
+}
+
+.in-gamebb {
+    position : fixed;
+    width : auto;
+    left : 0;
+    right : 0;
+    bottom : 1em;
+    padding : 0;
+}
+
+.in-gamebb button {
+    position : relative;
+    display : block;
+    background-color : rgba(255, 255, 255, 0);
+    border-style : none;
+    margin : 0.2em auto;
+    width : 10em;
+    font-size : 1.5em;
+    transition : background-color 0.3s;
+    -webkit-transition : background-color 0.3s;
+    -moz-transition : background-color 0.3s;
+    -o-transition : background-color 0.3s;
+}
+
+.in-gamebb button:hover {
+    background-color : rgba(255, 255, 255, 0.9);
+}
+
+@keyframes hideingamepop {
+    0% { opacity : 1; }
+    100% { opacity : 0; }
+}
+@-webkit-keyframes hideingamepop {
+    0% { opacity : 1; }
+    100% { opacity : 0; }
+}
+@-moz-keyframes hideingamepop {
+    0% { opacity : 1; }
+    100% { opacity : 0; }
+}
+@-o-keyframes hideingamepop {
+    0% { opacity : 1; }
+    100% { opacity : 0; }
+}
+
+@keyframes showingamepop {
+    0% { opacity : 0; }
+    100% { opacity : 1; }
+}
+@-webkit-keyframes showingamepop {
+    0% { opacity : 0; }
+    100% { opacity : 1; }
+}
+@-moz-keyframes showingamepop {
+    0% { opacity : 0; }
+    100% { opacity : 1; }
+}@-o-keyframes showingamepop {
+    0% { opacity : 0; }
+    100% { opacity : 1; }
+}

@@ -111,6 +111,7 @@ var my_scene = {
 			this.items.push(it);
 			this.timer_count = 0;
 
+
 			for(var j = 0; j < 3; ++j){
 				var cut = Math.max(3, 9 - Math.floor(this.hero_sphere.position.x / 1000));
 				var type = Math.floor(Math.random() * 10) < cut ? 0 : 1;

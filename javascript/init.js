@@ -5,6 +5,14 @@ var sys = new function() {
     this.msgdelay = 20;
     this.poptag;
     this.heroselect = 0;
+    this.pausecnter;
+    this.onpause = false;
+    this.pausedelay = 10;
+    this.onfin = false;
+    this.fincnter;
+    this.findelay = 10;
+    this.onpausecntback = false;
+    this.pausecntbackcnter;
     setInterval(systimer, 100);
     this.addmsg = function(content) {
         if (typeof content == 'string')
@@ -65,6 +73,13 @@ var sys = new function() {
         $('#samurais .card#samuraihplost .cardcontent').get(0).innerHTML = hplost.toString();
         $('#samurais .card#samuraisamuraitama .cardcontent').get(0).innerHTML = walls.toString();
     }
+    this.updatecd = function(cd) {
+        var target = $('#herohpcd span#heroablity span').get(0);
+        if (cd == 0)
+            target.innerHTML = 'ready';
+        else
+            target.innerHTML = 'in cooldown(' + cd.toString() + 's)';
+    }
     this.updatehp = function(cur, tot) { $('#herohpcd #herohp #hpinfo').get(0).innerHTML = cur.toString() +'/' + tot.toString(); }
     this.settname = function(name) { $('#herohpcd #herohp #nameinfo').get(0).innerHTML = name + '|'; }
     this.modpts = function(pts) { $('#ingamepts').get(0).innerHTML = pts.toString(); }
@@ -90,10 +105,58 @@ var sys = new function() {
             }
         }
     }
+    this.shutpause = function() {
+        this.onpause = true;
+        this.pausecnter = 0;
+    }
+    this.shutfin = function() {
+        this.onfin = true;
+        this.fincnter = 0;
+    }
+    this.cntpause = function() {
+        if (this.onpause) {
+            ++this.pausecnter;
+            if (this.pausecnter == this.pausedelay) {
+                $('#pausepop').rmClass('hide');
+                $('#pausepop').addClass('off');
+                this.onpause = false;
+            }
+        }
+    }
+    this.initpausecntback = function(delay) {
+        this.pausecntbackcnter = delay * 10;
+        this.onpausecntback = true;
+    }
+    this.pausecntback = function() {
+        if (this.onpausecntback) {
+            if (this.pausecntbackcnter % 10 == 0) {
+                $('#pausepop #pausecb').get(0).innerHTML = (this.pausecntbackcnter / 10).toString();
+            }
+            if (this.pausecntbackcnter == 8) {
+                this.onpausecntback = false;
+                hidepause();
+                my_timer = setInterval(timer, 16);
+            }
+            --this.pausecntbackcnter;
+        }
+    }
+    this.cntfin = function() {
+        if (this.onfin) {
+            ++this.fincnter;
+            if (this.fincnter == this.findelay) {
+                $('#finpop').rmClass('hide');
+                $("#finpop").addClass('off');
+                this.onfin = false;
+            }
+        }
+    }
 }();
 
 function systimer() {
     sys.popmsg();
+    sys.cntpause();
+    sys.pausecntback();
+    sys.cntfin();
 }
 
 /*
