@@ -426,6 +426,7 @@ var my_scene = {
 		showpause();
 	},
 	endgame : function(){
+        console.log('endgame');
         var isquit = arguments[0] ? arguments[0] : false;
 		clearInterval(my_timer);
         if (!isquit) {
