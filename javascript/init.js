@@ -70,6 +70,13 @@ var sys = new function() {
         $('#samurais .card#samuraihplost .cardcontent').get(0).innerHTML = hplost.toString();
         $('#samurais .card#samuraisamuraitama .cardcontent').get(0).innerHTML = walls.toString();
     }
+    this.updatecd = function(cd) {
+        var target = $('#herohpcd span.heroablity span').get(0);
+        if (cd == 0)
+            target.innerHTML = 'ready';
+        else
+            target.innerHTML = 'in cooldown(' + cd.toString() + 's)';
+    }
     this.updatehp = function(cur, tot) { $('#herohpcd #herohp #hpinfo').get(0).innerHTML = cur.toString() +'/' + tot.toString(); }
     this.settname = function(name) { $('#herohpcd #herohp #nameinfo').get(0).innerHTML = name + '|'; }
     this.modpts = function(pts) { $('#ingamepts').get(0).innerHTML = pts.toString(); }
