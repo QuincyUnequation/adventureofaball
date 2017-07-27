@@ -26,6 +26,9 @@ var my_scene = {
 	first_add : 0,
 	color : [0xffff00, 0x00ff00, 0x7f7f00, 0x7f007f, 0x007f7f],
 	dust : [0, 0, 0, 0],
+	score_cnt : 0,
+	skill_level : 1,
+	height : [0, 0, 0],
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -41,6 +44,11 @@ var my_scene = {
 		}
 	},
 	update : function(){
+		++this.score_cnt;
+		if(this.score_cnt == 12){
+			this.score_change(1);
+			this.score_cnt = 0;
+		}
 		if(this.damaged > 0){
 			--this.damaged;
 		}
@@ -103,19 +111,40 @@ var my_scene = {
 			this.items.push(it);
 			this.timer_count = 0;
 
-			var type = Math.floor(Math.random() * 2);
-			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
-			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
-			var ground = new THREE.Mesh(geometry, material);
-			ground.position.x = this.hero_sphere.position.x + 30;
-			ground.position.y = (Math.floor(Math.random() * 3) - 1) * 1.5;
-			ground.position.z = 0.5;
-			this.scene.add(ground);
-			this.map.push(ground);
-			var BoxHelper = new THREE.BoxHelper(ground, 0x000000);
-			this.map_box.push(BoxHelper);
-			this.scene.add(BoxHelper);
-			this.map_type.push(type);
+
+			for(var j = 0; j < 3; ++j){
+				var cut = Math.max(3, 9 - Math.floor(this.hero_sphere.position.x / 1000));
+				var type = Math.floor(Math.random() * 10) < cut ? 0 : 1;
+				var delta_z = 0;
+				if(this.height[j] == 0){
+					delta_z = Math.floor(Math.random() * 2);
+				}
+				if(this.height[j] == 1){
+					delta_z = Math.floor(Math.random() * 3) - 1;
+				}
+				if(this.height[j] == 2){
+					delta_z = Math.floor(Math.random() * 2) - 1;
+				}
+				var height = this.height[j] + delta_z;
+				this.height[j] = height;
+				if(height == 0){
+					height = 0.02;
+				}
+				if(this.height[j] != 0 || type != 0){
+					geometry = new THREE.BoxGeometry(this.hero_speed * 120, 1, height);
+					material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
+					var ground = new THREE.Mesh(geometry, material);
+					ground.position.x = this.hero_sphere.position.x + this.hero_speed * 600;
+					ground.position.y = j * 1.5 - 1.5;
+					ground.position.z = height / 2;
+					this.scene.add(ground);
+					this.map.push(ground);
+					var BoxHelper = new THREE.BoxHelper(ground, 0x000000);
+					this.map_box.push(BoxHelper);
+					this.scene.add(BoxHelper);
+					this.map_type.push(type);
+				}
+			}
 		}
 		var i = 0;
 		while(i < this.items.length){
@@ -139,11 +168,13 @@ var my_scene = {
 			}
 			else if(diff_x * diff_x + diff_y * diff_y + diff_z * diff_z - eps < (radius + length) * (radius + length)){
 				if(this.items[i].type == 0){
-					++this.score;
+					this.score_change(50);
 					sys.modpts(this.score);
+					sys.addmsg("+50!");
 				}
 				else if(this.items[i].type == 1){
 					this.hp_change(10);
+					sys.addmsg("Healed!");
 				}
 				else{
 					++this.dust[this.items[i].type - 1];
@@ -163,7 +194,7 @@ var my_scene = {
 				this.items.splice(i, 1);
 				if(this.skill == 2 && this.cd == 0)
 				{
-					this.cd = this.cd_max[2];
+					this.cd = this.cd_max[2] * (1.1 - this.skill_level * 0.1);
 				}
 			}
 			else {
@@ -206,8 +237,8 @@ var my_scene = {
 				if(starty - eps <= y && y - eps <= endy && startz - eps <= z && z - eps <= endz){
 					if(x - radius + eps < startx && x + radius + eps > startx){
 						if(this.skill == 3 && this.cd == 0){
-							this.hp_change(-40);
-							this.cd = this.cd_max[3];
+							this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+							this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 							this.scene.remove(it);
 							this.scene.remove(this.map_box[i]);
 							this.map.splice(i, 1);
@@ -225,8 +256,8 @@ var my_scene = {
 					if(Math.max(y - radius, starty) + eps < Math.min(y + radius, endy)){
 						if(z - radius + eps < startz && z + radius - eps > startz){
 							if(this.skill == 3 && this.cd == 0){
-								this.hp_change(-40);
-								this.cd = this.cd_max[3];
+								this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+								this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 								this.scene.remove(it);
 								this.scene.remove(this.map_box[i]);
 								this.map.splice(i, 1);
@@ -253,8 +284,8 @@ var my_scene = {
 					if(Math.max(z - radius, startz) + eps < Math.min(z + radius, endz)){
 						if(y - radius + eps < starty && y + radius - eps > starty){
 							if(this.skill == 3 && this.cd == 0){
-								this.hp_change(-40);
-								this.cd = this.cd_max[3];
+								this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+								this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 								this.scene.remove(it);
 								this.scene.remove(this.map_box[i]);
 								this.map.splice(i, 1);
@@ -272,8 +303,8 @@ var my_scene = {
 						}
 						if(y + radius - eps > endy && y - radius + eps < endy){
 							if(this.skill == 3 && this.cd == 0){
-								this.hp_change(-40);
-								this.cd = this.cd_max[3];
+								this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+								this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 								this.scene.remove(it);
 								this.scene.remove(this.map_box[i]);
 								this.map.splice(i, 1);
@@ -295,6 +326,11 @@ var my_scene = {
 			}
 		}
 		var nowx = this.hero_sphere.position.x;
+		var spd = this.hero_speed;
+		if(nowx > (0.1 + spd) * (spd - 0.09) / 0.02 * 1000){
+			this.hero_speed += 0.01;
+			sys.addmsg("Speed up!");
+		}
 		if(nowx - Math.floor(nowx / 1000) * 1000 < 100){
 			this.first_add = 1;
 		}
@@ -382,8 +418,58 @@ var my_scene = {
 	endgame : function(){
 		clearInterval(my_timer);
 		showfin();
-		/*var fso = new ActiveXObject(Scripting.FileSystemObject);
-		var f = fso.createtextfile("C:\\save_data.txt", 2, true); */
+		/*TODO : update your career here
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		*/
 	},
 	game_init : function(){
 		for(var i = 0; i < this.items.length; ++i){
@@ -409,6 +495,8 @@ var my_scene = {
 		this.hp = 100;
 		this.recovering = 0;
 		this.cd = 0;
+		this.score_cnt = 0;
+		this.height = [0, 0, 0];
 		var geometry = new THREE.PlaneGeometry(1200, 5);
 		var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh(geometry, material);
@@ -451,7 +539,7 @@ var my_scene = {
 			if(delta < 0){
 				this.damaged = 20;
 				if(this.skill == 1){
-					this.recovering = Math.floor(-delta * 0.25) * 15;
+					this.recovering = Math.floor(-delta * (0.2 + 0.05 * this.skill_level)) * 15;
 				}
 			}
 		}
@@ -464,6 +552,10 @@ var my_scene = {
 		}
 		sys.updatehp(this.hp, this.hp_max);
 	},
+	score_change : function(delta){
+		this.score += delta;
+		sys.modpts(this.score);
+	}
 };
 
 function timer() {
@@ -474,7 +566,7 @@ function timer() {
 function init(){
 	if(first){
 		my_scene.scene = new THREE.Scene();
-		my_scene.camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight, 0.1, 1000);
+		my_scene.camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight, 0.1, 100);
 		my_scene.timer = 0;
 		my_scene.renderer = new THREE.WebGLRenderer();
 		my_scene.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
