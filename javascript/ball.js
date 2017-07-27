@@ -1,6 +1,7 @@
 var eps = 1e-10;
 var my_timer;
 var first = 1;
+var light;
 var my_scene = {
 	items : [],
 	map : [],
@@ -27,11 +28,10 @@ var my_scene = {
 	color : [0xffff00, 0x00ff00, 0x7f7f00, 0x7f007f, 0x007f7f],
 	dust : [0, 0, 0, 0],
 	score_cnt : 0,
-	skill_level : 0,
+	skill_level : 1,
 	height : [0, 0, 0],
-    hp_lost : 0,
-    skill_cnt :  [0, 0, 0, 0],
-    gamerec : [],
+	delta_depth : 0.02,
+	hero_color : [0xffffff, 0x7f7f00, 0x7f007f, 0x007f7f],
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -65,11 +65,11 @@ var my_scene = {
 			--this.recovering;
 			if(this.recovering % 15 == 0){
 				this.hp_change(1);
-                ++this.skill_cnt[1];
 			}
 		}
 		this.hero_sphere.position.x += this.hero_speed;
 		this.camera.position.x += this.hero_speed;
+		light.position.x += this.hero_speed;
 		if(this.rolling > 0 && this.rolling <= 30){
 			--this.rolling;
 		}
@@ -99,23 +99,6 @@ var my_scene = {
 		}
 		++this.timer_count;
 		if(this.timer_count == 120){
-			var type = Math.floor(Math.random() * 5);
-			var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-			var material = new THREE.MeshBasicMaterial({color : this.color[type]});
-			var it = {};
-			it.item = new THREE.Mesh(geometry, material);
-			it.rot_spd_x = 0.01;
-			it.rot_spd_y = 0.02;
-			it.rot_spd_z = 0.03;
-			it.item.position.x = this.hero_sphere.position.x + 30;
-			it.item.position.y = (Math.floor(Math.random() * 3) - 1) * 1.5;
-			it.item.position.z = 0.5;
-			it.type = type;
-			this.scene.add(it.item);
-			this.items.push(it);
-			this.timer_count = 0;
-
-
 			for(var j = 0; j < 3; ++j){
 				var cut = Math.max(3, 9 - Math.floor(this.hero_sphere.position.x / 1000));
 				var type = Math.floor(Math.random() * 10) < cut ? 0 : 1;
@@ -132,11 +115,11 @@ var my_scene = {
 				var height = this.height[j] + delta_z;
 				this.height[j] = height;
 				if(height == 0){
-					height = 0.02;
+					height = 0.05;
 				}
 				if(this.height[j] != 0 || type != 0){
 					geometry = new THREE.BoxGeometry(this.hero_speed * 120, 1, height);
-					material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
+					material = new THREE.MeshLambertMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
 					var ground = new THREE.Mesh(geometry, material);
 					ground.position.x = this.hero_sphere.position.x + this.hero_speed * 600;
 					ground.position.y = j * 1.5 - 1.5;
@@ -149,6 +132,31 @@ var my_scene = {
 					this.map_type.push(type);
 				}
 			}
+			var type = Math.floor(Math.random() * 100);
+			if(type < 90){
+				type = 0;
+			}
+			else if(type < 95){
+				type = 1;
+			}
+			else{
+				type = Math.floor(Math.random() * 3) + 2;
+			}
+			var where = Math.floor(Math.random() * 3);
+			var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+			var material = new THREE.MeshLambertMaterial({color : this.color[type]});
+			var it = {};
+			it.item = new THREE.Mesh(geometry, material);
+			it.rot_spd_x = 0.01;
+			it.rot_spd_y = 0.02;
+			it.rot_spd_z = 0.03;
+			it.item.position.x = this.hero_sphere.position.x + this.hero_speed * 600;
+			it.item.position.y = (where - 1) * 1.5;
+			it.item.position.z = this.height[where] + 0.2 + Math.random() * 0.8;
+			it.type = type;
+			this.scene.add(it.item);
+			this.items.push(it);
+			this.timer_count = 0;
 		}
 		var i = 0;
 		while(i < this.items.length){
@@ -175,7 +183,6 @@ var my_scene = {
 					this.score_change(50);
 					sys.modpts(this.score);
 					sys.addmsg("+50!");
-                    ++this.dust[0];
 				}
 				else if(this.items[i].type == 1){
 					this.hp_change(10);
@@ -200,7 +207,6 @@ var my_scene = {
 				if(this.skill == 2 && this.cd == 0)
 				{
 					this.cd = this.cd_max[2] * (1.1 - this.skill_level * 0.1);
-                    ++this.skill_cnt[2];
 				}
 			}
 			else {
@@ -250,7 +256,6 @@ var my_scene = {
 							this.map.splice(i, 1);
 							this.map_box.splice(i, 1);
 							this.map_type.splice(i, 1);
-                            ++this.skill_cnt[3];
 							continue;
 						}
 						else{
@@ -270,7 +275,6 @@ var my_scene = {
 								this.map.splice(i, 1);
 								this.map_box.splice(i, 1);
 								this.map_type.splice(i, 1);
-                                ++this.skill_cnt[3];
 								continue;
 							}
 							else{
@@ -299,7 +303,6 @@ var my_scene = {
 								this.map.splice(i, 1);
 								this.map_box.splice(i, 1);
 								this.map_type.splice(i, 1);
-                                ++this.skill_cnt[3];
 								continue;
 							}
 							else{
@@ -319,7 +322,6 @@ var my_scene = {
 								this.map.splice(i, 1);
 								this.map_box.splice(i, 1);
 								this.map_type.splice(i, 1);
-                                ++this.skill_cnt[3];
 								continue;
 							}
 							else{
@@ -347,37 +349,39 @@ var my_scene = {
 		if(nowx - Math.floor(nowx / 1000) * 1000 > 900 && this.first_add){
 			this.first_add = 0;
 			var geometry = new THREE.PlaneGeometry(1200, 5);
-			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
+			var material = new THREE.MeshLambertMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
 			var plane = new THREE.Mesh( geometry, material );
 			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
+			plane.position.z = this.delta_depth;
 			this.scene.add(plane);
 			this.plane.push(plane);
 
 			geometry = new THREE.PlaneGeometry(1200, 1);
-			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+			material = new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
 			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
-			plane.position.z = 0.01;
+			plane.position.z = 0.01 + this.delta_depth;
 			plane.position.y = 1.5;
 			this.scene.add(plane);
 			this.plane.push(plane);
 
 			geometry = new THREE.PlaneGeometry(1200, 1);
-			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+			material = new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
 			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
-			plane.position.z = 0.01;
+			plane.position.z = 0.01 + this.delta_depth;
 			this.scene.add(plane);
 			this.plane.push(plane);
 
 			geometry = new THREE.PlaneGeometry(1200, 1);
-			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+			material = new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
 			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
 			plane.position.y = -1.5;
-			plane.position.z = 0.01;
+			plane.position.z = 0.01 + this.delta_depth;
 			this.scene.add(plane);
 			this.plane.push(plane);
+			this.delta_depth *= -1;
 		}
 		i = 0;
 		while(i < this.plane.length){
@@ -426,53 +430,10 @@ var my_scene = {
 		showpause();
 	},
 	endgame : function(){
-        console.log('endgame');
-        var isquit = arguments[0] ? arguments[0] : false;
 		clearInterval(my_timer);
-        if (!isquit) {
-            showfin();
-            var newdust;
-            var newlevel;
-            var newpro;
-            var msgs;
-            for (var i = 0; i < 4; ++i)
-                newdust += this.dust[i];
-            for (var i = 0; i < 4; ++i) {
-                newlevel = sys.hero(i).lv;
-                newpro = sys.hero(i).pro;
-                if (i > 0)
-                    newpro += 3 * this.dust[i];
-                if (i == this.skill)
-                    newpro += this.dust[0];
-                while (10 * Math.pow(2, newlevel) <= newpro)
-                    ++newlevel;
-                if ((sys.hero(i).lvl == -1) && (newlevel > -1)) {
-                    msgs = ' unlock!';
-                    switch (i) {
-                        case 1 :
-                            msgs = 'General' + msgs;
-                            break;
-                        case 2 :
-                            msgs = 'Lord' + msgs;
-                            break;
-                        case 3 :
-                            msgs = 'Samurai' + msgs;
-                            break;
-                        }
-                    sys.addmsg(msgs);
-                }
-                if (i == this.skill)
-                    filex.updater(i, newlevel, newpro, this.hero_sphere.position.x, newdust, this.score, this.hplost, this.skill_cnt[i]);
-                else
-                    filex.updater(i, newlevel, newpro, 0, 0, 0, 0, 0);
-            }
-            sys.updatecareer();
-        }
-    },
+		showfin();
+	},
 	game_init : function(){
-        this.skill = sys.heroselect;
-        this.skill_level = sys.hero(sys.heroselect).lv;
-        this.gamerec = [0, 0, 0, 0, 0, 0];
 		for(var i = 0; i < this.items.length; ++i){
 			this.scene.remove(this.items[i].item);
 		}
@@ -498,17 +459,16 @@ var my_scene = {
 		this.cd = 0;
 		this.score_cnt = 0;
 		this.height = [0, 0, 0];
-        this.hp_lost = 0;
-        this.skill_cnt = [0, 0, 0, 0];
+		this.delta_depth = 0.02;
 		var geometry = new THREE.PlaneGeometry(1200, 5);
-		var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
+		var material = new THREE.MeshLambertMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 350;
 		this.scene.add(plane);
 		this.plane.push(plane);
 
 		geometry = new THREE.PlaneGeometry(1200, 1);
-		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+		material = new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 350;
 		plane.position.y = 1.5;
@@ -517,7 +477,7 @@ var my_scene = {
 		this.plane.push(plane);
 
 		geometry = new THREE.PlaneGeometry(1200, 1);
-		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+		material = new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 350;
 		plane.position.z = 0.01;
@@ -525,11 +485,11 @@ var my_scene = {
 		this.plane.push(plane);
 
 		geometry = new THREE.PlaneGeometry(1200, 1);
-		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+		material = new THREE.MeshLambertMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 350;
 		plane.position.y = -1.5;
-		plane.position.z = 0.01;
+		plane.position.z = 0.02;
 		this.scene.add(plane);
 		this.plane.push(plane);
         sys.modpts(this.score);
@@ -541,7 +501,6 @@ var my_scene = {
 			this.hp += delta;
 			if(delta < 0){
 				this.damaged = 20;
-                this.hp_lost += delta;
 				if(this.skill == 1){
 					this.recovering = Math.floor(-delta * (0.2 + 0.05 * this.skill_level)) * 15;
 				}
@@ -575,14 +534,17 @@ function init(){
 		my_scene.renderer = new THREE.WebGLRenderer();
 		my_scene.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		my_scene.renderer.setClearColor(0x7f7f7f);
-		$('#gamezone').get(0).appendChild(my_scene.renderer.domElement);
+		document.body.appendChild(my_scene.renderer.domElement);
 		first = 0;
-		var geometry = new THREE.SphereGeometry(0.25, 32, 32);
-		var material = new THREE.MeshBasicMaterial({color : 0xffffff});
-		my_scene.hero_sphere = new THREE.Mesh(geometry, material);
+		light = new THREE.PointLight(0xffffff, 2, 200);
+		my_scene.scene.add(light);
+		var am_light = new THREE.AmbientLight(0x404040); // soft white light
+		my_scene.scene.add(am_light);
 	}
-
 	my_scene.skill = sys.heroselect;
+	var geometry = new THREE.SphereGeometry(0.25, 32, 32);
+	var material = new THREE.MeshLambertMaterial({color : my_scene.hero_color[my_scene.skill]});
+	my_scene.hero_sphere = new THREE.Mesh(geometry, material);
 	my_scene.hero_sphere.position.x = 0;
     my_scene.hero_sphere.position.y = 0;
 	my_scene.hero_sphere.position.z = 0.25;
@@ -595,6 +557,7 @@ function init(){
 	my_scene.camera.up.z = 1;
 	my_scene.camera.lookAt({x : 3, y : 0, z : 0,});
 	my_scene.game_init();
+	light.position.set(0, 0, 50);
 	sys.updatehp(my_scene.hp, my_scene.hp_max);
 	my_timer = setInterval(timer, 16);
 }
