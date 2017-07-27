@@ -3,6 +3,7 @@ var filex = new function(document) {
     this.load = function() {
         var raw = unescape(document.cookie);
         if (!/^aoab\s+/.test()) {
+            console.log('newcookie');
             this.data = '{"noob" : {"lv" : 0, "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0}, ' +
             '"general" : {"lv" : "-1", "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0, "restore" : 0}, ' +
             '"lord" : {"lv" : "-1", "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0, "bonus" : 0}, ' +
