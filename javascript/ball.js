@@ -437,17 +437,17 @@ var my_scene = {
             var msgs;
             for (var i = 0; i < 4; ++i)
                 newdust += this.dust[i];
-                for (var i = 0; i < 4; ++i) {
-                    newlevel = sys.hero(i).lv;
-                    newpro = sys.hero(i).pro;
-                    if (i > 0)
-                        newpro += 3 * this.dust[i];
-                    if (i == this.skill)
-                        newpro += this.dust[0];
-                    while (10 * Math.pow(2, newlevel) <= newpro)
-                        ++newlevel;
-                    if ((sys.hero(i).lvl == -1) && (newlevel > -1)) {
-                        msgs = ' unlock!';
+            for (var i = 0; i < 4; ++i) {
+                newlevel = sys.hero(i).lv;
+                newpro = sys.hero(i).pro;
+                if (i > 0)
+                    newpro += 3 * this.dust[i];
+                if (i == this.skill)
+                    newpro += this.dust[0];
+                while (10 * Math.pow(2, newlevel) <= newpro)
+                    ++newlevel;
+                if ((sys.hero(i).lvl == -1) && (newlevel > -1)) {
+                    msgs = ' unlock!';
                     switch (i) {
                         case 1 :
                             msgs = 'General' + msgs;
@@ -458,18 +458,17 @@ var my_scene = {
                         case 3 :
                             msgs = 'Samurai' + msgs;
                             break;
-                    }
+                        }
                     sys.addmsg(msgs);
                 }
                 if (i == this.skill)
                     filex.updater(i, newlevel, newpro, this.hero_sphere.position.x, newdust, this.score, this.hplost, this.skill_cnt[i]);
-                else {
+                else
                     filex.updater(i, newlevel, newpro, 0, 0, 0, 0, 0);
-                }
             }
             sys.updatecareer();
         }
-	},
+    },
 	game_init : function(){
         this.skill = sys.heroselect;
         this.skill_level = sys.hero(sys.heroselect).lv;
