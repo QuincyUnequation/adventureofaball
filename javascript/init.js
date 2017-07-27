@@ -71,7 +71,7 @@ var sys = new function() {
         $('#samurais .card#samuraisamuraitama .cardcontent').get(0).innerHTML = walls.toString();
     }
     this.updatecd = function(cd) {
-        var target = $('#herohpcd span.heroablity span').get(0);
+        var target = $('#herohpcd span#heroablity span').get(0);
         if (cd == 0)
             target.innerHTML = 'ready';
         else
