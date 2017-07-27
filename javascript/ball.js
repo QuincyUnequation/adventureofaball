@@ -26,6 +26,8 @@ var my_scene = {
 	first_add : 0,
 	color : [0xffff00, 0x00ff00, 0x7f7f00, 0x7f007f, 0x007f7f],
 	dust : [0, 0, 0, 0],
+	score_cnt : 0,
+	skill_level : 0,
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -41,6 +43,11 @@ var my_scene = {
 		}
 	},
 	update : function(){
+		++this.score_cnt;
+		if(this.score_cnt == 12){
+			this.score_change(1);
+			this.score_cnt = 0;
+		}
 		if(this.damaged > 0){
 			--this.damaged;
 		}
@@ -102,7 +109,7 @@ var my_scene = {
 			this.scene.add(it.item);
 			this.items.push(it);
 			this.timer_count = 0;
-			
+
 			var type = Math.floor(Math.random() * 2);
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
 			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
@@ -139,11 +146,13 @@ var my_scene = {
 			}
 			else if(diff_x * diff_x + diff_y * diff_y + diff_z * diff_z - eps < (radius + length) * (radius + length)){
 				if(this.items[i].type == 0){
-					++this.score;
+					this.score_change(50);
 					sys.modpts(this.score);
+					sys.addmsg("+50!");
 				}
 				else if(this.items[i].type == 1){
 					this.hp_change(10);
+					sys.addmsg("Healed!");
 				}
 				else{
 					++this.dust[this.items[i].type - 1];
@@ -163,7 +172,7 @@ var my_scene = {
 				this.items.splice(i, 1);
 				if(this.skill == 2 && this.cd == 0)
 				{
-					this.cd = this.cd_max[2];
+					this.cd = this.cd_max[2] * (1.1 - this.skill_level * 0.1);
 				}
 			}
 			else {
@@ -206,8 +215,8 @@ var my_scene = {
 				if(starty - eps <= y && y - eps <= endy && startz - eps <= z && z - eps <= endz){
 					if(x - radius + eps < startx && x + radius + eps > startx){
 						if(this.skill == 3 && this.cd == 0){
-							this.hp_change(-40);
-							this.cd = this.cd_max[3];
+							this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+							this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 							this.scene.remove(it);
 							this.scene.remove(this.map_box[i]);
 							this.map.splice(i, 1);
@@ -225,8 +234,8 @@ var my_scene = {
 					if(Math.max(y - radius, starty) + eps < Math.min(y + radius, endy)){
 						if(z - radius + eps < startz && z + radius - eps > startz){
 							if(this.skill == 3 && this.cd == 0){
-								this.hp_change(-40);
-								this.cd = this.cd_max[3];
+								this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+								this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 								this.scene.remove(it);
 								this.scene.remove(this.map_box[i]);
 								this.map.splice(i, 1);
@@ -253,8 +262,8 @@ var my_scene = {
 					if(Math.max(z - radius, startz) + eps < Math.min(z + radius, endz)){
 						if(y - radius + eps < starty && y + radius - eps > starty){
 							if(this.skill == 3 && this.cd == 0){
-								this.hp_change(-40);
-								this.cd = this.cd_max[3];
+								this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+								this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 								this.scene.remove(it);
 								this.scene.remove(this.map_box[i]);
 								this.map.splice(i, 1);
@@ -272,8 +281,8 @@ var my_scene = {
 						}
 						if(y + radius - eps > endy && y - radius + eps < endy){
 							if(this.skill == 3 && this.cd == 0){
-								this.hp_change(-40);
-								this.cd = this.cd_max[3];
+								this.hp_change(-40 * (1.1 - this.skill_level * 0.1));
+								this.cd = this.cd_max[3] * (1.05 - this.skill_level * 0.05);
 								this.scene.remove(it);
 								this.scene.remove(this.map_box[i]);
 								this.map.splice(i, 1);
@@ -295,10 +304,15 @@ var my_scene = {
 			}
 		}
 		var nowx = this.hero_sphere.position.x;
+		var spd = this.hero_speed;
+		if(nowx > (0.1 + spd) * (spd - 0.09) / 0.02 * 1000){
+			this.hero_speed += 0.01;
+			sys.addmsg("Speed up!");
+		}
 		if(nowx - Math.floor(nowx / 1000) * 1000 < 100){
 			this.first_add = 1;
 		}
-		if(nowx - Math.floor(nowx / 1000) * 1000 > 900 && first_add){
+		if(nowx - Math.floor(nowx / 1000) * 1000 > 900 && this.first_add){
 			this.first_add = 0;
 			var geometry = new THREE.PlaneGeometry(1200, 5);
 			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
@@ -306,7 +320,7 @@ var my_scene = {
 			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
 			this.scene.add(plane);
 			this.plane.push(plane);
-			
+
 			geometry = new THREE.PlaneGeometry(1200, 1);
 			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
@@ -315,7 +329,7 @@ var my_scene = {
 			plane.position.y = 1.5;
 			this.scene.add(plane);
 			this.plane.push(plane);
-		
+
 			geometry = new THREE.PlaneGeometry(1200, 1);
 			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
@@ -323,7 +337,7 @@ var my_scene = {
 			plane.position.z = 0.01;
 			this.scene.add(plane);
 			this.plane.push(plane);
-		
+
 			geometry = new THREE.PlaneGeometry(1200, 1);
 			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
@@ -382,7 +396,7 @@ var my_scene = {
 	endgame : function(){
 		clearInterval(my_timer);
 		showfin();
-		/*var fso = new ActiveXObject(Scripting.FileSystemObject); 
+		/*var fso = new ActiveXObject(Scripting.FileSystemObject);
 		var f = fso.createtextfile("C:\\save_data.txt", 2, true); */
 	},
 	game_init : function(){
@@ -409,13 +423,14 @@ var my_scene = {
 		this.hp = 100;
 		this.recovering = 0;
 		this.cd = 0;
+		this.score_cnt = 0;
 		var geometry = new THREE.PlaneGeometry(1200, 5);
 		var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh(geometry, material);
 		plane.position.x = 350;
 		this.scene.add(plane);
 		this.plane.push(plane);
-		
+
 		geometry = new THREE.PlaneGeometry(1200, 1);
 		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
@@ -424,7 +439,7 @@ var my_scene = {
 		plane.position.z = 0.01;
 		this.scene.add(plane);
 		this.plane.push(plane);
-		
+
 		geometry = new THREE.PlaneGeometry(1200, 1);
 		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
@@ -432,7 +447,7 @@ var my_scene = {
 		plane.position.z = 0.01;
 		this.scene.add(plane);
 		this.plane.push(plane);
-		
+
 		geometry = new THREE.PlaneGeometry(1200, 1);
 		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
@@ -441,6 +456,9 @@ var my_scene = {
 		plane.position.z = 0.01;
 		this.scene.add(plane);
 		this.plane.push(plane);
+        sys.modpts(this.score);
+        sys.updatehp(this.hp_max, this.hp_max);
+        sys.updatecd(0);
 	},
 	hp_change : function(delta){
 		if(delta > 0 || (delta < 0 && this.damaged == 0)){
@@ -448,7 +466,7 @@ var my_scene = {
 			if(delta < 0){
 				this.damaged = 20;
 				if(this.skill == 1){
-					this.recovering = Math.floor(-delta * 0.25) * 15;
+	 				this.recovering = Math.floor(-delta * (0.2 + 0.05 * this.skill_level)) * 15;
 				}
 			}
 		}
@@ -461,6 +479,10 @@ var my_scene = {
 		}
 		sys.updatehp(this.hp, this.hp_max);
 	},
+	score_change : function(delta){
+		this.score += delta;
+		sys.modpts(this.score);
+	}
 };
 
 function timer() {
@@ -471,7 +493,7 @@ function timer() {
 function init(){
 	if(first){
 		my_scene.scene = new THREE.Scene();
-		my_scene.camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight, 0.1, 1000);
+		my_scene.camera = new THREE.PerspectiveCamera(75, document.documentElement.clientWidth / document.documentElement.clientHeight, 0.1, 100);
 		my_scene.timer = 0;
 		my_scene.renderer = new THREE.WebGLRenderer();
 		my_scene.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
@@ -485,6 +507,7 @@ function init(){
 
 	my_scene.skill = sys.heroselect;
 	my_scene.hero_sphere.position.x = 0;
+    my_scene.hero_sphere.position.y = 0;
 	my_scene.hero_sphere.position.z = 0.25;
 	my_scene.scene.add(my_scene.hero_sphere);
 	my_scene.camera.position.x = -5;
