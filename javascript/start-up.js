@@ -92,6 +92,11 @@ function quitgame() {
     hidepause();
 }
 
+function showpause() {
+    $('#pausepop').rmClass('off');
+    $('#pausepop').addClass('on');
+}
+
 function hidepause() {
     $('#pausepop').rmClass('on');
     $('#pausepop').addClass('hide');
@@ -99,9 +104,21 @@ function hidepause() {
 }
 
 function restart() {
-    hidepause();
+    init();
+    hidefin();
 }
 
 function endgame() {
-    hidepause();
+    hidefin();
+}
+
+function hidefin() {
+    $('#finpop').rmClass('on');
+    $('#finpop').addClass('hide');
+    sys.shutfin();
+}
+
+function showfin() {
+    $('#finpop').rmClass('off');
+    $('#finpop').addClass('on');
 }

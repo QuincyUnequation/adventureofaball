@@ -208,6 +208,10 @@
 
 .in-gamepop.on {
     opacity : 1;
+    animation : showingamepop 0.8s;
+    -webkit-animation : showingamepop 0.8s;
+    -moz-animation : showingamepop 0.8s;
+    -o-animation : showingamepop 0.8s;
 }
 
 .in-gamepop.hide {

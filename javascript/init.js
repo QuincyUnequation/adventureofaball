@@ -8,6 +8,9 @@ var sys = new function() {
     this.pausecnter;
     this.onpause = false;
     this.pausedelay = 10;
+    this.onfin = false;
+    this.fincnter;
+    this.findelay = 10;
     this.onpausecntback = false;
     this.pausecntbackcnter;
     setInterval(systimer, 100);
@@ -106,6 +109,10 @@ var sys = new function() {
         this.onpause = true;
         this.pausecnter = 0;
     }
+    this.shutfin = function() {
+        this.onfin = true;
+        this.fincnter = 0;
+    }
     this.cntpause = function() {
         if (this.onpause) {
             ++this.pausecnter;
@@ -128,8 +135,19 @@ var sys = new function() {
             if (this.pausecntbackcnter == 8) {
                 this.onpausecntback = false;
                 hidepause();
+                my_timer = setInterval(timer, 16);
             }
             --this.pausecntbackcnter;
+        }
+    }
+    this.cntfin = function() {
+        if (this.onfin) {
+            ++this.fincnter;
+            if (this.fincnter == this.findelay) {
+                $('#pausepop').rmClass('hide');
+                $("#pausepop").addClass('off');
+                this.onfin = false;
+            }
         }
     }
 }();
@@ -138,6 +156,7 @@ function systimer() {
     sys.popmsg();
     sys.cntpause();
     sys.pausecntback();
+    sys.cntfin();
 }
 
 /*
