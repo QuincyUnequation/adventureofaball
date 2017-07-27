@@ -133,6 +133,21 @@ function trim(source) {
             }
             return this;
         },
+        hasClass :function() {
+            var target = arguments[0];
+            if (typeof target != 'string')
+                return undefined;
+            for (var i = 0; i < this.target.length; ++i) {
+                if (!this.target[i].className)
+                    return false;
+                else {
+                    var cls = ' ' + this.target[i].className + ' ';
+                    if (cls.indexOf(' ' + target + ' ') == -1)
+                        return false;
+                }
+            }
+            return true;
+        },
         rmClass : function() {
             var value = arguments[0];
             if (typeof value != 'string')

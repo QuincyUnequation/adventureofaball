@@ -19,7 +19,7 @@ var my_scene = {
 	hp_max : 100,
 	hp : 100,
 	damaged : 0,
-	skill : 2,
+	skill : 0,
 	cd : 0,
 	cd_max : [0, 0, 240, 600],
 	recovering : 0,
@@ -27,8 +27,11 @@ var my_scene = {
 	color : [0xffff00, 0x00ff00, 0x7f7f00, 0x7f007f, 0x007f7f],
 	dust : [0, 0, 0, 0],
 	score_cnt : 0,
-	skill_level : 1,
+	skill_level : 0,
 	height : [0, 0, 0],
+    hp_lost : 0,
+    skill_cnt :  [0, 0, 0, 0],
+    gamerec : [],
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -62,6 +65,7 @@ var my_scene = {
 			--this.recovering;
 			if(this.recovering % 15 == 0){
 				this.hp_change(1);
+                ++this.skill_cnt[1];
 			}
 		}
 		this.hero_sphere.position.x += this.hero_speed;
@@ -171,6 +175,7 @@ var my_scene = {
 					this.score_change(50);
 					sys.modpts(this.score);
 					sys.addmsg("+50!");
+                    ++this.dust[0];
 				}
 				else if(this.items[i].type == 1){
 					this.hp_change(10);
@@ -195,6 +200,7 @@ var my_scene = {
 				if(this.skill == 2 && this.cd == 0)
 				{
 					this.cd = this.cd_max[2] * (1.1 - this.skill_level * 0.1);
+                    ++this.skill_cnt[2];
 				}
 			}
 			else {
@@ -244,6 +250,7 @@ var my_scene = {
 							this.map.splice(i, 1);
 							this.map_box.splice(i, 1);
 							this.map_type.splice(i, 1);
+                            ++this.skill_cnt[3];
 							continue;
 						}
 						else{
@@ -263,6 +270,7 @@ var my_scene = {
 								this.map.splice(i, 1);
 								this.map_box.splice(i, 1);
 								this.map_type.splice(i, 1);
+                                ++this.skill_cnt[3];
 								continue;
 							}
 							else{
@@ -291,6 +299,7 @@ var my_scene = {
 								this.map.splice(i, 1);
 								this.map_box.splice(i, 1);
 								this.map_type.splice(i, 1);
+                                ++this.skill_cnt[3];
 								continue;
 							}
 							else{
@@ -310,6 +319,7 @@ var my_scene = {
 								this.map.splice(i, 1);
 								this.map_box.splice(i, 1);
 								this.map_type.splice(i, 1);
+                                ++this.skill_cnt[3];
 								continue;
 							}
 							else{
@@ -416,62 +426,53 @@ var my_scene = {
 		showpause();
 	},
 	endgame : function(){
+        console.log('endgame');
+        var isquit = arguments[0] ? arguments[0] : false;
 		clearInterval(my_timer);
-		showfin();
-		/*TODO : update your career here
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		*/
-	},
+        if (!isquit) {
+            showfin();
+            var newdust;
+            var newlevel;
+            var newpro;
+            var msgs;
+            for (var i = 0; i < 4; ++i)
+                newdust += this.dust[i];
+            for (var i = 0; i < 4; ++i) {
+                newlevel = sys.hero(i).lv;
+                newpro = sys.hero(i).pro;
+                if (i > 0)
+                    newpro += 3 * this.dust[i];
+                if (i == this.skill)
+                    newpro += this.dust[0];
+                while (10 * Math.pow(2, newlevel) <= newpro)
+                    ++newlevel;
+                if ((sys.hero(i).lvl == -1) && (newlevel > -1)) {
+                    msgs = ' unlock!';
+                    switch (i) {
+                        case 1 :
+                            msgs = 'General' + msgs;
+                            break;
+                        case 2 :
+                            msgs = 'Lord' + msgs;
+                            break;
+                        case 3 :
+                            msgs = 'Samurai' + msgs;
+                            break;
+                        }
+                    sys.addmsg(msgs);
+                }
+                if (i == this.skill)
+                    filex.updater(i, newlevel, newpro, this.hero_sphere.position.x, newdust, this.score, this.hplost, this.skill_cnt[i]);
+                else
+                    filex.updater(i, newlevel, newpro, 0, 0, 0, 0, 0);
+            }
+            sys.updatecareer();
+        }
+    },
 	game_init : function(){
+        this.skill = sys.heroselect;
+        this.skill_level = sys.hero(sys.heroselect).lv;
+        this.gamerec = [0, 0, 0, 0, 0, 0];
 		for(var i = 0; i < this.items.length; ++i){
 			this.scene.remove(this.items[i].item);
 		}
@@ -497,6 +498,8 @@ var my_scene = {
 		this.cd = 0;
 		this.score_cnt = 0;
 		this.height = [0, 0, 0];
+        this.hp_lost = 0;
+        this.skill_cnt = [0, 0, 0, 0];
 		var geometry = new THREE.PlaneGeometry(1200, 5);
 		var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh(geometry, material);
@@ -538,6 +541,7 @@ var my_scene = {
 			this.hp += delta;
 			if(delta < 0){
 				this.damaged = 20;
+                this.hp_lost += delta;
 				if(this.skill == 1){
 					this.recovering = Math.floor(-delta * (0.2 + 0.05 * this.skill_level)) * 15;
 				}
@@ -571,7 +575,7 @@ function init(){
 		my_scene.renderer = new THREE.WebGLRenderer();
 		my_scene.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		my_scene.renderer.setClearColor(0x7f7f7f);
-		document.body.appendChild(my_scene.renderer.domElement);
+		$('#gamezone').get(0).appendChild(my_scene.renderer.domElement);
 		first = 0;
 		var geometry = new THREE.SphereGeometry(0.25, 32, 32);
 		var material = new THREE.MeshBasicMaterial({color : 0xffffff});
