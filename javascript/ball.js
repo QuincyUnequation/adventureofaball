@@ -6,6 +6,7 @@ var my_scene = {
 	map : [],
 	map_box : [],
 	map_type : [],
+	plane : [],
 	hero_speed : 0.1,
 	timer_count : 0,
 	score : 0,
@@ -18,6 +19,13 @@ var my_scene = {
 	hp_max : 100,
 	hp : 100,
 	damaged : 0,
+	skill : 2,
+	cd : 0,
+	cd_max : [0, 0, 240, 600],
+	recovering : 0,
+	first_add : 0,
+	color : [0xffff00, 0x00ff00, 0x7f7f00, 0x7f007f, 0x007f7f],
+	dust : [0, 0, 0, 0],
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -35,6 +43,18 @@ var my_scene = {
 	update : function(){
 		if(this.damaged > 0){
 			--this.damaged;
+		}
+		if(this.cd % 6 == 0){
+			sys.updatecd(this.cd / 60);
+		}
+		if(this.cd > 0){
+			--this.cd;
+		}
+		if(this.recovering > 0){
+			--this.recovering;
+			if(this.recovering % 15 == 0){
+				this.hp_change(1);
+			}
 		}
 		this.hero_sphere.position.x += this.hero_speed;
 		this.camera.position.x += this.hero_speed;
@@ -67,8 +87,9 @@ var my_scene = {
 		}
 		++this.timer_count;
 		if(this.timer_count == 120){
+			var type = Math.floor(Math.random() * 5);
 			var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-			var material = new THREE.MeshBasicMaterial({color : 0xffff00});
+			var material = new THREE.MeshBasicMaterial({color : this.color[type]});
 			var it = {};
 			it.item = new THREE.Mesh(geometry, material);
 			it.rot_spd_x = 0.01;
@@ -76,11 +97,12 @@ var my_scene = {
 			it.rot_spd_z = 0.03;
 			it.item.position.x = this.hero_sphere.position.x + 30;
 			it.item.position.y = (Math.floor(Math.random() * 3) - 1) * 1.5;
-			it.item.position.z = 0;
+			it.item.position.z = 0.5;
+			it.type = type;
 			this.scene.add(it.item);
 			this.items.push(it);
 			this.timer_count = 0;
-
+			
 			var type = Math.floor(Math.random() * 2);
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
 			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
@@ -101,20 +123,48 @@ var my_scene = {
 			it.rotation.x += this.items[i].rot_spd_x;
 			it.rotation.y += this.items[i].rot_spd_y;
 			it.rotation.z += this.items[i].rot_spd_z;
-			var diff_x = it.position.x - this.hero_sphere.position.x;
-			var diff_y = it.position.y - this.hero_sphere.position.y;
-			var diff_z = it.position.z - this.hero_sphere.position.z;
+			var diff_x = this.hero_sphere.position.x - it.position.x;
+			var diff_y = this.hero_sphere.position.y - it.position.y;
+			var diff_z = this.hero_sphere.position.z - it.position.z;
 			var radius = this.hero_sphere.geometry.parameters.radius;
 			var length = it.geometry.parameters.width;
+			if(this.skill == 2 && diff_x * diff_x + diff_y * diff_y + diff_z * diff_z - eps < 6.25 && this.cd == 0){
+				it.position.x += Math.abs(diff_x) > (this.hero_speed + 0.05) ? (this.hero_speed + 0.05) * diff_x / Math.abs(diff_x) : diff_x;
+				it.position.y += Math.abs(diff_y) > (Math.abs(this.hero_speed_y) + 0.05) ? (Math.abs(this.hero_speed_y) + 0.05) * diff_y / Math.abs(diff_y) : diff_y;
+				it.position.z += Math.abs(diff_z) > (Math.abs(this.hero_speed_z) + 0.05) ? (Math.abs(this.hero_speed_z) + 0.05) * diff_z / Math.abs(diff_z) : diff_z;
+			}
 			if(it.position.x - this.hero_sphere.position.x + eps < -5){
 				this.scene.remove(it);
 				this.items.splice(i, 1);
 			}
 			else if(diff_x * diff_x + diff_y * diff_y + diff_z * diff_z - eps < (radius + length) * (radius + length)){
+				if(this.items[i].type == 0){
+					++this.score;
+					sys.modpts(this.score);
+				}
+				else if(this.items[i].type == 1){
+					this.hp_change(10);
+				}
+				else{
+					++this.dust[this.items[i].type - 1];
+					var str = "Dust of ";
+					if(this.items[i].type == 2){
+						str += "General get!";
+					}
+					if(this.items[i].type == 3){
+						str += "Lord get!";
+					}
+					if(this.items[i].type == 4){
+						str += "Samurai get!";
+					}
+					sys.addmsg(str);
+				}
 				this.scene.remove(it);
 				this.items.splice(i, 1);
-				++this.score;
-				sys.modpts(this.score);
+				if(this.skill == 2 && this.cd == 0)
+				{
+					this.cd = this.cd_max[2];
+				}
 			}
 			else {
 				++i;
@@ -155,17 +205,41 @@ var my_scene = {
 				}
 				if(starty - eps <= y && y - eps <= endy && startz - eps <= z && z - eps <= endz){
 					if(x - radius + eps < startx && x + radius + eps > startx){
-						this.endgame();
-						break;
+						if(this.skill == 3 && this.cd == 0){
+							this.hp_change(-40);
+							this.cd = this.cd_max[3];
+							this.scene.remove(it);
+							this.scene.remove(this.map_box[i]);
+							this.map.splice(i, 1);
+							this.map_box.splice(i, 1);
+							this.map_type.splice(i, 1);
+							continue;
+						}
+						else{
+							this.endgame();
+							break;
+						}
 					}
 				}
 				if(Math.max(x - radius, startx) + eps < Math.min(x + radius, endx)){
 					if(Math.max(y - radius, starty) + eps < Math.min(y + radius, endy)){
 						if(z - radius + eps < startz && z + radius - eps > startz){
-							z = startz - radius;
-							this.hero_sphere.position.z = z;
-							this.hero_speed_z = -this.hero_speed_z;
-							this.hp_change(-20);
+							if(this.skill == 3 && this.cd == 0){
+								this.hp_change(-40);
+								this.cd = this.cd_max[3];
+								this.scene.remove(it);
+								this.scene.remove(this.map_box[i]);
+								this.map.splice(i, 1);
+								this.map_box.splice(i, 1);
+								this.map_type.splice(i, 1);
+								continue;
+							}
+							else{
+								z = startz - radius;
+								this.hero_sphere.position.z = z;
+								this.hero_speed_z = -this.hero_speed_z;
+								this.hp_change(-20);
+							}
 						}
 						if(z + radius - eps > endz && z - radius + eps < endz && this.hero_speed_z < 0){
 							z = endz + radius;
@@ -178,21 +252,95 @@ var my_scene = {
 					}
 					if(Math.max(z - radius, startz) + eps < Math.min(z + radius, endz)){
 						if(y - radius + eps < starty && y + radius - eps > starty){
-							y = starty - radius;
-							this.side_moving = Math.floor(Math.abs(this.map[i].position.y - 1.5 - y) / 0.05);
-							this.hero_speed_y = -0.05;
-							this.hero_sphere.position.y = y;
-							this.hp_change(-20);
+							if(this.skill == 3 && this.cd == 0){
+								this.hp_change(-40);
+								this.cd = this.cd_max[3];
+								this.scene.remove(it);
+								this.scene.remove(this.map_box[i]);
+								this.map.splice(i, 1);
+								this.map_box.splice(i, 1);
+								this.map_type.splice(i, 1);
+								continue;
+							}
+							else{
+								y = starty - radius;
+								this.side_moving = Math.floor(Math.abs(this.map[i].position.y - 1.5 - y) / 0.05);
+								this.hero_speed_y = -0.05;
+								this.hero_sphere.position.y = y;
+								this.hp_change(-20);
+							}
 						}
 						if(y + radius - eps > endy && y - radius + eps < endy){
-							y = endy + radius;
-							this.side_moving = Math.floor(Math.abs(this.map[i].position.y + 1.5 - y) / 0.05);
-							this.hero_speed_y = 0.05;
-							this.hero_sphere.position.y = y;
-							this.hp_change(-20);
+							if(this.skill == 3 && this.cd == 0){
+								this.hp_change(-40);
+								this.cd = this.cd_max[3];
+								this.scene.remove(it);
+								this.scene.remove(this.map_box[i]);
+								this.map.splice(i, 1);
+								this.map_box.splice(i, 1);
+								this.map_type.splice(i, 1);
+								continue;
+							}
+							else{
+								y = endy + radius;
+								this.side_moving = Math.floor(Math.abs(this.map[i].position.y + 1.5 - y) / 0.05);
+								this.hero_speed_y = 0.05;
+								this.hero_sphere.position.y = y;
+								this.hp_change(-20);
+							}
 						}
 					}
 				}
+				++i;
+			}
+		}
+		var nowx = this.hero_sphere.position.x;
+		if(nowx - Math.floor(nowx / 1000) * 1000 < 100){
+			this.first_add = 1;
+		}
+		if(nowx - Math.floor(nowx / 1000) * 1000 > 900 && first_add){
+			this.first_add = 0;
+			var geometry = new THREE.PlaneGeometry(1200, 5);
+			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
+			var plane = new THREE.Mesh( geometry, material );
+			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
+			this.scene.add(plane);
+			this.plane.push(plane);
+			
+			geometry = new THREE.PlaneGeometry(1200, 1);
+			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+			plane = new THREE.Mesh(geometry, material);
+			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
+			plane.position.z = 0.01;
+			plane.position.y = 1.5;
+			this.scene.add(plane);
+			this.plane.push(plane);
+		
+			geometry = new THREE.PlaneGeometry(1200, 1);
+			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+			plane = new THREE.Mesh(geometry, material);
+			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
+			plane.position.z = 0.01;
+			this.scene.add(plane);
+			this.plane.push(plane);
+		
+			geometry = new THREE.PlaneGeometry(1200, 1);
+			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+			plane = new THREE.Mesh(geometry, material);
+			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
+			plane.position.y = -1.5;
+			plane.position.z = 0.01;
+			this.scene.add(plane);
+			this.plane.push(plane);
+		}
+		i = 0;
+		while(i < this.plane.length){
+			var endx = this.plane[i].geometry.parameters.width / 2 + this.plane[i].position;
+			if(endx - this.hero_sphere.position.x < -10){
+				this.scene.remove(this.plane[i]);
+				this.plane.splice(i, 1);
+			}
+			else{
 				++i;
 			}
 		}
@@ -223,9 +371,19 @@ var my_scene = {
 				this.rolling = 60;
 			}
 		}
+		if(e.keyCode == 27){
+			this.pausegame();
+		}
+	},
+	pausegame : function(){
+		clearInterval(my_timer);
+		showpause();
 	},
 	endgame : function(){
 		clearInterval(my_timer);
+		showfin();
+		/*var fso = new ActiveXObject(Scripting.FileSystemObject); 
+		var f = fso.createtextfile("C:\\save_data.txt", 2, true); */
 	},
 	game_init : function(){
 		for(var i = 0; i < this.items.length; ++i){
@@ -239,6 +397,7 @@ var my_scene = {
 		this.map = [];
 		this.map_box = [];
 		this.map_type = [];
+		this.plane = [];
 		this.hero_speed = 0.1;
 		this.hero_speed_y = 0;
 		this.hero_speed_z = 0;
@@ -248,23 +407,60 @@ var my_scene = {
 		this.timer_count = 0;
 		this.score = 0;
 		this.hp = 100;
+		this.recovering = 0;
+		this.cd = 0;
+		var geometry = new THREE.PlaneGeometry(1200, 5);
+		var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
+		var plane = new THREE.Mesh(geometry, material);
+		plane.position.x = 350;
+		this.scene.add(plane);
+		this.plane.push(plane);
+		
+		geometry = new THREE.PlaneGeometry(1200, 1);
+		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+		plane = new THREE.Mesh(geometry, material);
+		plane.position.x = 350;
+		plane.position.y = 1.5;
+		plane.position.z = 0.01;
+		this.scene.add(plane);
+		this.plane.push(plane);
+		
+		geometry = new THREE.PlaneGeometry(1200, 1);
+		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+		plane = new THREE.Mesh(geometry, material);
+		plane.position.x = 350;
+		plane.position.z = 0.01;
+		this.scene.add(plane);
+		this.plane.push(plane);
+		
+		geometry = new THREE.PlaneGeometry(1200, 1);
+		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
+		plane = new THREE.Mesh(geometry, material);
+		plane.position.x = 350;
+		plane.position.y = -1.5;
+		plane.position.z = 0.01;
+		this.scene.add(plane);
+		this.plane.push(plane);
 	},
 	hp_change : function(delta){
 		if(delta > 0 || (delta < 0 && this.damaged == 0)){
 			this.hp += delta;
 			if(delta < 0){
 				this.damaged = 20;
+				if(this.skill == 1){
+					this.recovering = Math.floor(-delta * 0.25) * 15;
+				}
 			}
 		}
 		if(this.hp > this.hp_max){
-			this.hp == this.hp_max;
+			this.hp = this.hp_max;
 		}
 		if(this.hp <= 0){
 			this.hp = 0;
 			this.endgame();
 		}
-    sys.updatehp(this.hp, this.hp_max);
-	}
+		sys.updatehp(this.hp, this.hp_max);
+	},
 };
 
 function timer() {
@@ -287,6 +483,8 @@ function init(){
 		my_scene.hero_sphere = new THREE.Mesh(geometry, material);
 	}
 
+	my_scene.skill = sys.heroselect;
+	my_scene.hero_sphere.position.x = 0;
 	my_scene.hero_sphere.position.z = 0.25;
 	my_scene.scene.add(my_scene.hero_sphere);
 	my_scene.camera.position.x = -5;
