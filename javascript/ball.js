@@ -417,8 +417,58 @@ var my_scene = {
 	endgame : function(){
 		clearInterval(my_timer);
 		showfin();
-		/*var fso = new ActiveXObject(Scripting.FileSystemObject);
-		var f = fso.createtextfile("C:\\save_data.txt", 2, true); */
+		/*TODO : update your career here
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		*/
 	},
 	game_init : function(){
 		for(var i = 0; i < this.items.length; ++i){
