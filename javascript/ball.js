@@ -27,7 +27,8 @@ var my_scene = {
 	color : [0xffff00, 0x00ff00, 0x7f7f00, 0x7f007f, 0x007f7f],
 	dust : [0, 0, 0, 0],
 	score_cnt : 0,
-	skill_level : 0,
+	skill_level : 1,
+	height : [0, 0, 0],
 	resize : function(){
 		this.renderer.setSize(document.documentElement.clientWidth, document.documentElement.clientHeight);
 		this.camera.aspect = document.documentElement.clientWidth / document.documentElement.clientHeight;
@@ -110,19 +111,39 @@ var my_scene = {
 			this.items.push(it);
 			this.timer_count = 0;
 
-			var type = Math.floor(Math.random() * 2);
-			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
-			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
-			var ground = new THREE.Mesh(geometry, material);
-			ground.position.x = this.hero_sphere.position.x + 30;
-			ground.position.y = (Math.floor(Math.random() * 3) - 1) * 1.5;
-			ground.position.z = 0.5;
-			this.scene.add(ground);
-			this.map.push(ground);
-			var BoxHelper = new THREE.BoxHelper(ground, 0x000000);
-			this.map_box.push(BoxHelper);
-			this.scene.add(BoxHelper);
-			this.map_type.push(type);
+			for(var j = 0; j < 3; ++j){
+				var cut = Math.max(3, 9 - Math.floor(this.hero_sphere.position.x / 1000));
+				var type = Math.floor(Math.random() * 10) < cut ? 0 : 1;
+				var delta_z = 0;
+				if(this.height[j] == 0){
+					delta_z = Math.floor(Math.random() * 2);
+				}
+				if(this.height[j] == 1){
+					delta_z = Math.floor(Math.random() * 3) - 1;
+				}
+				if(this.height[j] == 2){
+					delta_z = Math.floor(Math.random() * 2) - 1;
+				}
+				var height = this.height[j] + delta_z;
+				this.height[j] = height;
+				if(height == 0){
+					height = 0.02;
+				}
+				if(this.height[j] != 0 || type != 0){
+					geometry = new THREE.BoxGeometry(this.hero_speed * 120, 1, height);
+					material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
+					var ground = new THREE.Mesh(geometry, material);
+					ground.position.x = this.hero_sphere.position.x + this.hero_speed * 600;
+					ground.position.y = j * 1.5 - 1.5;
+					ground.position.z = height / 2;
+					this.scene.add(ground);
+					this.map.push(ground);
+					var BoxHelper = new THREE.BoxHelper(ground, 0x000000);
+					this.map_box.push(BoxHelper);
+					this.scene.add(BoxHelper);
+					this.map_type.push(type);
+				}
+			}
 		}
 		var i = 0;
 		while(i < this.items.length){
@@ -424,6 +445,7 @@ var my_scene = {
 		this.recovering = 0;
 		this.cd = 0;
 		this.score_cnt = 0;
+		this.height = [0, 0, 0];
 		var geometry = new THREE.PlaneGeometry(1200, 5);
 		var material = new THREE.MeshBasicMaterial({color: 0x00ff00, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh(geometry, material);
@@ -466,7 +488,7 @@ var my_scene = {
 			if(delta < 0){
 				this.damaged = 20;
 				if(this.skill == 1){
-	 				this.recovering = Math.floor(-delta * (0.2 + 0.05 * this.skill_level)) * 15;
+					this.recovering = Math.floor(-delta * (0.2 + 0.05 * this.skill_level)) * 15;
 				}
 			}
 		}
