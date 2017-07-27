@@ -298,7 +298,7 @@ var my_scene = {
 		if(nowx - Math.floor(nowx / 1000) * 1000 < 100){
 			this.first_add = 1;
 		}
-		if(nowx - Math.floor(nowx / 1000) * 1000 > 900 && first_add){
+		if(nowx - Math.floor(nowx / 1000) * 1000 > 900 && this.first_add){
 			this.first_add = 0;
 			var geometry = new THREE.PlaneGeometry(1200, 5);
 			var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.DoubleSide} );
