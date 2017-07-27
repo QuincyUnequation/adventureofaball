@@ -2,11 +2,13 @@ var filex = new function(document) {
     this.data;
     this.load = function() {
         var raw = unescape(document.cookie);
-        if (!/^aoab/.test())
+        if (!/^aoab/.test()) {
             this.data = '{"noob" : {"lv" : 0, "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0}, ' +
             '"general" : {"lv" : "-1", "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0, "restore" : 0}, ' +
             '"lord" : {"lv" : "-1", "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0, "bonus" : 0}, ' +
             '"samurai" : {"lv" : "-1", "pro" : 0, "dis" : 0, "dust" : 0, "pts" : 0, "hplost" : 0, "wall" : 0}}';
+            store(JSON.parse(this.data));
+        }
         else {
             this.data = raw.replace(/^aoab/, '');
         }
@@ -80,5 +82,6 @@ var filex = new function(document) {
 
 
 function store(obj) {
+    console.log(obj);
     document.cookie = escape('aoab' + JSON.stringify(obj));
 }
