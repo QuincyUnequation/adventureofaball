@@ -18,15 +18,15 @@ function startgame() {
 
 function prevhero() {
     --sys.heroselect;
-    sys.heroselect += 5;
-    sys.heroselect %= 5;
+    sys.heroselect += 4;
+    sys.heroselect %= 4;
     updatehero();
 }
 
 function nexthero() {
     ++sys.heroselect;
-    sys.heroselect += 5;
-    sys.heroselect %= 5;
+    sys.heroselect += 4;
+    sys.heroselect %= 4;
     updatehero();
 }
 
