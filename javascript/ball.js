@@ -102,7 +102,7 @@ var my_scene = {
 			this.scene.add(it.item);
 			this.items.push(it);
 			this.timer_count = 0;
-			
+
 			var type = Math.floor(Math.random() * 2);
 			geometry = new THREE.BoxGeometry(this.hero_speed * 60, 1, 1);
 			material = new THREE.MeshBasicMaterial({color : type == 0 ? 0x00ffff : 0xff0000});
@@ -306,7 +306,7 @@ var my_scene = {
 			plane.position.x = Math.floor(nowx / 1000) * 1000 + 1350;
 			this.scene.add(plane);
 			this.plane.push(plane);
-			
+
 			geometry = new THREE.PlaneGeometry(1200, 1);
 			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
@@ -315,7 +315,7 @@ var my_scene = {
 			plane.position.y = 1.5;
 			this.scene.add(plane);
 			this.plane.push(plane);
-		
+
 			geometry = new THREE.PlaneGeometry(1200, 1);
 			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
@@ -323,7 +323,7 @@ var my_scene = {
 			plane.position.z = 0.01;
 			this.scene.add(plane);
 			this.plane.push(plane);
-		
+
 			geometry = new THREE.PlaneGeometry(1200, 1);
 			material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 			plane = new THREE.Mesh(geometry, material);
@@ -382,7 +382,7 @@ var my_scene = {
 	endgame : function(){
 		clearInterval(my_timer);
 		showfin();
-		/*var fso = new ActiveXObject(Scripting.FileSystemObject); 
+		/*var fso = new ActiveXObject(Scripting.FileSystemObject);
 		var f = fso.createtextfile("C:\\save_data.txt", 2, true); */
 	},
 	game_init : function(){
@@ -415,7 +415,7 @@ var my_scene = {
 		plane.position.x = 350;
 		this.scene.add(plane);
 		this.plane.push(plane);
-		
+
 		geometry = new THREE.PlaneGeometry(1200, 1);
 		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
@@ -424,7 +424,7 @@ var my_scene = {
 		plane.position.z = 0.01;
 		this.scene.add(plane);
 		this.plane.push(plane);
-		
+
 		geometry = new THREE.PlaneGeometry(1200, 1);
 		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
@@ -432,7 +432,7 @@ var my_scene = {
 		plane.position.z = 0.01;
 		this.scene.add(plane);
 		this.plane.push(plane);
-		
+
 		geometry = new THREE.PlaneGeometry(1200, 1);
 		material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide} );
 		plane = new THREE.Mesh(geometry, material);
@@ -441,6 +441,9 @@ var my_scene = {
 		plane.position.z = 0.01;
 		this.scene.add(plane);
 		this.plane.push(plane);
+        sys.modpts(this.score);
+        sys.updatehp(this.hp_max, this.hp_max);
+        sys.updatecd(0);
 	},
 	hp_change : function(delta){
 		if(delta > 0 || (delta < 0 && this.damaged == 0)){
@@ -485,6 +488,7 @@ function init(){
 
 	my_scene.skill = sys.heroselect;
 	my_scene.hero_sphere.position.x = 0;
+    my_scene.hero_sphere.position.y = 0;
 	my_scene.hero_sphere.position.z = 0.25;
 	my_scene.scene.add(my_scene.hero_sphere);
 	my_scene.camera.position.x = -5;

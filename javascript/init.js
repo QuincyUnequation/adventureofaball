@@ -144,8 +144,8 @@ var sys = new function() {
         if (this.onfin) {
             ++this.fincnter;
             if (this.fincnter == this.findelay) {
-                $('#pausepop').rmClass('hide');
-                $("#pausepop").addClass('off');
+                $('#finpop').rmClass('hide');
+                $("#finpop").addClass('off');
                 this.onfin = false;
             }
         }

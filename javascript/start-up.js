@@ -93,6 +93,7 @@ function quitgame() {
 }
 
 function showpause() {
+    $('#pausecb').get(0).innerHTML = 'Current Point : ' + my_scene.score.toString();
     $('#pausepop').rmClass('off');
     $('#pausepop').addClass('on');
 }
@@ -119,6 +120,7 @@ function hidefin() {
 }
 
 function showfin() {
+    $('#fincb').get(0).innerHTML = 'Final Point : ' + my_scene.score.toString();
     $('#finpop').rmClass('off');
     $('#finpop').addClass('on');
 }
